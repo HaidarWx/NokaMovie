@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { getMovies } from "../src/api/tmdb.jsx";
 import { useEffect } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 function NavBar() {
   const [keyword, setKeyword] = useState("");
   console.log(keyword);
-
+  const navigate = useNavigate();
   function handleSearch(event) {
     event.preventDefault();
-
     const inputUser = keyword.trim().toLowerCase().replace(/\s+/g, "-");
     if (!inputUser) return;
-    window.location.href = `/?search=${encodeURIComponent(inputUser)}`;
+    navigate(`/search?query=${encodeURIComponent(inputUser)}`);
   }
   return (
     <>
@@ -112,11 +118,10 @@ function NavBar() {
 }
 function SearchResults() {
   const [movies, setMovies] = useState([]);
-  console.log(movies);
+  const [searchParams] = useSearchParams();
+  const keyword = searchParams.get("query");
+  console.log(keyword);
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const keyword = params.get("search");
-
     if (!keyword) return;
 
     async function loadMovies() {
@@ -125,7 +130,7 @@ function SearchResults() {
       setMovies(results);
     }
     loadMovies();
-  }, []);
+  }, [keyword]);
 
   return (
     <>
@@ -421,26 +426,23 @@ function Footer() {
 }
 
 function App() {
-  const params = new URLSearchParams(window.location.search);
-  const keyword = params.get("search");
-
-  const isSearchMode = Boolean(keyword);
-
   return (
-    <>
+    <BrowserRouter>
       <NavBar />
-
-      {isSearchMode ? (
-        <SearchResults />
-      ) : (
-        <>
-          <ModalOverlay />
-          <HomeContent />
-        </>
-      )}
-
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <ModalOverlay />
+              <HomeContent />
+            </>
+          }
+        />
+        <Route path="/search" element={<SearchResults />} />
+      </Routes>
       <Footer />
-    </>
+    </BrowserRouter>
   );
 }
 export default App;
