@@ -27,3 +27,18 @@ export async function getMovies(inputKeyword) {
     throw error;
   }
 }
+export async function getPopularMovies() {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/trending/all/week?api_key=${API_KEY}`, //Hero-Swiper
+    );
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data movie popular!");
+    }
+    const data = await response.json();
+    return data.results;
+  } catch (err) {
+    throw err;
+  }
+}

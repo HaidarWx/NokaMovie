@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getMovies } from "../src/api/tmdb.jsx";
+import { getMovies, getPopularMovies } from "../src/api/tmdb.jsx";
 import { useEffect } from "react";
 import {
   BrowserRouter,
@@ -8,6 +8,29 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+
+function swiper() {
+  return (
+    <Swiper
+      spaceBetween={50}
+      slidesPerView={3}
+      onSlideChange={() => console.log("slide change")}
+      onSwiper={(swiper) => console.log(swiper)}
+    >
+      <SwiperSlide>Slide 1</SwiperSlide>
+      <SwiperSlide>Slide 2</SwiperSlide>
+      <SwiperSlide>Slide 3</SwiperSlide>
+      <SwiperSlide>Slide 4</SwiperSlide>
+      ...
+    </Swiper>
+  );
+}
 function NavBar() {
   const [keyword, setKeyword] = useState("");
   console.log(keyword);
@@ -176,6 +199,51 @@ function SearchResults() {
     </>
   );
 }
+function HeroMovieSlider() {
+  const [movies, setMovies] = useState([]);
+  useEffect(() => {
+    async function loadMovies() {
+      const results = await getPopularMovies();
+      setMovies(results);
+    }
+    loadMovies();
+  }, []);
+  console.log(movies);
+  return (
+    <Swiper
+      spaceBetween={50}
+      slidesPerView={3}
+      className="swiper-content hero-slider"
+      onSlideChange={() => console.log("slide change")}
+      onSwiper={(swiper) => console.log(swiper)}
+    >
+      {movies.map((e) => {
+        console.log(e);
+        return (
+          <SwiperSlide>
+            <div className="slide-bg"></div>
+            <div className="slide-overlay">
+              <div className="slide-content">
+                <img src="#" alt="" className="slide-img" />
+                <h1 className="slide-title">{e.title}</h1>
+                <div className="slide-genre">{e.title}</div>
+                <p className="slide-info">{e.overview}</p>
+                <div className="slide-buttons">
+                  <a href="#" className="slide-button-1">
+                    <i className="bi bi-play-fill"></i> Watch Now
+                  </a>
+                  <a href="#" className="slide-button-2 modal-detail-button">
+                    More Info
+                  </a>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+        );
+      })}
+    </Swiper>
+  );
+}
 function ModalOverlay() {
   return (
     <>
@@ -196,25 +264,7 @@ function ModalOverlay() {
 function HomeContent() {
   return (
     <div className="home-content">
-      <section className="hero-slider">
-        <div className="swiper swiper-hero">
-          <div className="swiper-wrapper swiper-content"></div>
-
-          <div className="swiper-pagination"></div>
-
-          <div className="swiper-button-prev">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M16 5l-8 7 8 7" stroke="black" strokeWidth="2" />
-            </svg>
-          </div>
-          <div className="swiper-button-next">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M8 5l8 7-8 7" stroke="black" strokeWidth="2" />
-            </svg>
-          </div>
-        </div>
-      </section>
-
+      <HeroMovieSlider />
       <section className="card-slider-day">
         <div className="swiper cardSwiper">
           <h1>Trending Today</h1>
