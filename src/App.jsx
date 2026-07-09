@@ -11,7 +11,7 @@ import {
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 // Import Swiper styles
 import "swiper/css";
 
@@ -211,17 +211,31 @@ function HeroMovieSlider() {
   console.log(movies);
   return (
     <Swiper
-      spaceBetween={50}
-      slidesPerView={3}
       className="swiper-content hero-slider"
-      onSlideChange={() => console.log("slide change")}
+      modules={[Navigation, Pagination, Scrollbar, A11y]}
+      spaceBetween={0}
+      effect="fade"
+      fadeEffect={{ crossFade: true }}
+      slidesPerView={1}
+      navigation
+      pagination={{ clickable: true }}
+      scrollbar={{ draggable: true }}
       onSwiper={(swiper) => console.log(swiper)}
+      onSlideChange={() => console.log("slide change")}
     >
       {movies.map((e) => {
         console.log(e);
+        const backdrop = e.backdrop_path
+          ? `https://image.tmdb.org/t/p/original${e.backdrop_path}`
+          : "";
         return (
           <SwiperSlide>
-            <div className="slide-bg"></div>
+            <div
+              className="slide-bg"
+              style={{
+                backgroundImage: `url(${backdrop})`,
+              }}
+            ></div>
             <div className="slide-overlay">
               <div className="slide-content">
                 <img src="#" alt="" className="slide-img" />
