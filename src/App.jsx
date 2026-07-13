@@ -1,6 +1,15 @@
 import { useState } from "react";
-import { getMovies, getPopularMovies } from "../src/api/tmdb.jsx";
+import {
+  getMovies,
+  getPopularMovies,
+  loadAllGenres,
+  getTrendingDays,
+  getTrendingWeeks,
+  getTrendingPopular,
+  getTrendingTopRated,
+} from "../src/api/tmdb.jsx";
 import { useEffect } from "react";
+
 import {
   BrowserRouter,
   Routes,
@@ -11,7 +20,14 @@ import {
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Autoplay,
+  EffectFade,
+} from "swiper/modules";
 // Import Swiper styles
 import "swiper/css";
 
@@ -200,19 +216,26 @@ function SearchResults() {
   );
 }
 function HeroMovieSlider() {
+  const [genreList, setGenreList] = useState([]);
   const [movies, setMovies] = useState([]);
+
   useEffect(() => {
     async function loadMovies() {
-      const results = await getPopularMovies();
+      const [genres, results] = await Promise.all([
+        loadAllGenres(),
+        getPopularMovies(),
+      ]);
+
       setMovies(results);
+      setGenreList(genres);
     }
     loadMovies();
   }, []);
-  console.log(movies);
+
   return (
     <Swiper
       className="swiper-content hero-slider"
-      modules={[Navigation, Pagination, Scrollbar, A11y]}
+      modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
       spaceBetween={0}
       effect="fade"
       fadeEffect={{ crossFade: true }}
@@ -220,14 +243,23 @@ function HeroMovieSlider() {
       navigation
       pagination={{ clickable: true }}
       scrollbar={{ draggable: true }}
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log("slide change")}
+      autoplay={{
+        delay: 3000, // jeda 3 detik sebelum pindah ke slide berikutnya
+        disableOnInteraction: false, // tetap autoplay lagi meski user pernah geser manual
+        pauseOnMouseEnter: true,
+      }}
     >
       {movies.map((e) => {
-        console.log(e);
         const backdrop = e.backdrop_path
           ? `https://image.tmdb.org/t/p/original${e.backdrop_path}`
           : "";
+        const genre = e.genre_ids
+          .map((x) => {
+            const genre = genreList.find((g) => g.id === x);
+            return genre ? genre.name : "";
+          })
+          .join(", ");
+        const title = e.title ? e.title : e.name;
         return (
           <SwiperSlide>
             <div
@@ -239,8 +271,8 @@ function HeroMovieSlider() {
             <div className="slide-overlay">
               <div className="slide-content">
                 <img src="#" alt="" className="slide-img" />
-                <h1 className="slide-title">{e.title}</h1>
-                <div className="slide-genre">{e.title}</div>
+                <h1 className="slide-title">{title}</h1>
+                <div className="slide-genre">{genre}</div>
                 <p className="slide-info">{e.overview}</p>
                 <div className="slide-buttons">
                   <a href="#" className="slide-button-1">
@@ -275,7 +307,7 @@ function ModalOverlay() {
     </>
   );
 }
-function HomeContent() {
+/* function HomeContent() {
   return (
     <div className="home-content">
       <HeroMovieSlider />
@@ -436,6 +468,33 @@ function HomeContent() {
       </section>
     </div>
   );
+} */
+function HomeContent() {
+  return (
+    <div className="home-content">
+      <HeroMovieSlider />
+      <MovieSlider
+        title={"Trending Day's"}
+        fetchFunction={getTrendingDays}
+        idSlider={"day"}
+      />
+      <MovieSlider
+        title={"Trending Week's"}
+        fetchFunction={getTrendingWeeks}
+        idSlider={"week"}
+      />
+      <MovieSlider
+        title={"Trending Popular's"}
+        fetchFunction={getTrendingPopular}
+        idSlider={"popular"}
+      />
+      <MovieSlider
+        title={"Trending Top Rated's"}
+        fetchFunction={getTrendingTopRated}
+        idSlider={"topRated"}
+      />
+    </div>
+  );
 }
 function Footer() {
   return (
@@ -489,6 +548,54 @@ function Footer() {
   );
 }
 
+function useMovieList(fetchFunction) {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    async function loadMovies() {
+      const results = await fetchFunction();
+      setMovies(results);
+    }
+    loadMovies();
+  }, [fetchFunction]);
+  return movies;
+}
+function MovieSlider({ title, fetchFunction, idSlider }) {
+  const movies = useMovieList(fetchFunction);
+  console.log(movies);
+  return (
+    <section className={`card-slider-${idSlider}`}>
+      <div className="swiper cardSwiper">
+        <h1>{title}</h1>
+        <div className="swiper-wrapper">
+          <Swiper
+            spaceBetween={0}
+            slidesPerView={6}
+            modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
+            navigation
+          >
+            {movies.map((e) => {
+              const poster = e.poster_path
+                ? `https://image.tmdb.org/t/p/w500${e.poster_path}`
+                : `https://demofree.sirv.com/nope-not-here.jpg`;
+              return (
+                <SwiperSlide>
+                  <a href="#" className="swiper-slide">
+                    <img
+                      src={poster}
+                      alt=""
+                      className="card-img modal-detail-button"
+                    />
+                  </a>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </div>
+      </div>
+    </section>
+  );
+}
 function App() {
   return (
     <BrowserRouter>

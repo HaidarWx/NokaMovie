@@ -171,7 +171,7 @@ body.no-scroll {
 /* Card Content */
 .card-slider-day {
   background-color: #fad2d5;
-  padding: 2rem 0rem 1rem 0rem;
+  padding: 2rem 1rem 1rem 1rem;
   width: 100%;
 }
 .cardSwiper {
@@ -211,7 +211,7 @@ body.no-scroll {
 .card-slider-popular,
 .card-slider-topRated {
   background-color: #fad2d5;
-  padding: 1rem 0;
+  padding: 1rem 1rem;
   width: 100%;
 }
 .home-content.active {

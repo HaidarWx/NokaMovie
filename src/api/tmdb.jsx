@@ -42,3 +42,93 @@ export async function getPopularMovies() {
     throw err;
   }
 }
+export async function loadAllGenres() {
+  // Library Genre
+  try {
+    const [movieRes, tvRes] = await Promise.all([
+      fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/genre/tv/list?api_key=${API_KEY}`),
+    ]);
+
+    if (!movieRes.ok || !tvRes.ok) {
+      throw new Error("Gagal mengambil data");
+    }
+    const movieData = await movieRes.json();
+    const tvData = await tvRes.json();
+    return [...movieData.genres, ...tvData.genres];
+  } catch (error) {
+    throw error;
+  }
+}
+export async function getTrendingDays() {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/trending/all/day?api_key=${API_KEY}`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data movie popular!");
+    }
+    const data = await response.json();
+    return data.results;
+  } catch (err) {
+    throw err;
+  }
+}
+export async function getTrendingWeeks() {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/trending/all/week?api_key=${API_KEY}`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data movie popular!");
+    }
+    const data = await response.json();
+
+    return data.results;
+  } catch (err) {
+    throw err;
+  }
+}
+export async function getTrendingPopular() {
+  try {
+    const response = await fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}`);
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data movie popular!");
+    }
+    const data = await response.json();
+    const movies = data.results.map((movie) => ({
+      ...movie,
+      media_type: "tv",
+    }));
+    console.log(movies);
+    return movies;
+  } catch (err) {
+    throw err;
+  }
+}
+export async function getTrendingTopRated() {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/movie/popular?api_key=${API_KEY}`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data movie popular!");
+    }
+    const data = await response.json();
+    const movies = addMediaType(data, "movie");
+    console.log(movies);
+    return movies;
+  } catch (err) {
+    throw err;
+  }
+}
+function addMediaType(data, type) {
+  return data.results.map((item) => ({
+    ...item,
+    media_type: type,
+  }));
+}
