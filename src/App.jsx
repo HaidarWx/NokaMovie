@@ -49,7 +49,7 @@ function swiper() {
 }
 function NavBar() {
   const [keyword, setKeyword] = useState("");
-  console.log(keyword);
+
   const navigate = useNavigate();
   function handleSearch(event) {
     event.preventDefault();
@@ -156,20 +156,9 @@ function NavBar() {
   );
 }
 function SearchResults() {
-  const [movies, setMovies] = useState([]);
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("query");
-  console.log(keyword);
-  useEffect(() => {
-    if (!keyword) return;
-
-    async function loadMovies() {
-      const results = await getMovies(keyword);
-
-      setMovies(results);
-    }
-    loadMovies();
-  }, [keyword]);
+  const movies = useMovieList(getMovies(keyword), [keyword]);
 
   return (
     <>
@@ -548,7 +537,7 @@ function Footer() {
   );
 }
 
-function useMovieList(fetchFunction) {
+function useMovieList(fetchFunction, deps = []) {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -557,7 +546,7 @@ function useMovieList(fetchFunction) {
       setMovies(results);
     }
     loadMovies();
-  }, [fetchFunction]);
+  }, deps);
   return movies;
 }
 function MovieSlider({ title, fetchFunction, idSlider }) {
