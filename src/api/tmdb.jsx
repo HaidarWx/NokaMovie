@@ -126,6 +126,17 @@ export async function getTrendingTopRated() {
     throw err;
   }
 }
+export async function getDetail(id, type) {
+  try {
+    const detailRes = await fetch(
+      `${BASE_URL}/${type}/${id}?api_key=${API_KEY}&append_to_response=videos,content_ratings`,
+    );
+    const detail = await detailRes.json();
+    return detail;
+  } catch (err) {
+    throw err;
+  }
+}
 function addMediaType(data, type) {
   return data.results.map((item) => ({
     ...item,

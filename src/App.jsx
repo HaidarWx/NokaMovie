@@ -7,6 +7,7 @@ import {
   getTrendingWeeks,
   getTrendingPopular,
   getTrendingTopRated,
+  getDetail,
 } from "../src/api/tmdb.jsx";
 import { useEffect } from "react";
 
@@ -16,6 +17,8 @@ import {
   Route,
   useNavigate,
   useSearchParams,
+  Link,
+  useParams,
 } from "react-router-dom";
 
 // Import Swiper React components
@@ -158,7 +161,7 @@ function NavBar() {
 function SearchResults() {
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("query");
-  const movies = useMovieList(getMovies(keyword), [keyword]);
+  const movies = useMovieList(() => getMovies(keyword), [keyword]);
 
   return (
     <>
@@ -169,7 +172,10 @@ function SearchResults() {
             : `https://demofree.sirv.com/nope-not-here.jpg`;
 
           return (
-            <a href="" key={`${mov.media_type}-${mov.id}`}>
+            <Link
+              to={`/detail/${mov.media_type}/${mov.id}`}
+              key={`${mov.media_type}-${mov.id}`}
+            >
               <div
                 className="movie-card"
                 data-bs-toggle="modal"
@@ -197,7 +203,7 @@ function SearchResults() {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
           );
         })}
       </div>
@@ -539,10 +545,11 @@ function Footer() {
 
 function useMovieList(fetchFunction, deps = []) {
   const [movies, setMovies] = useState([]);
-
+  console.log(fetchFunction);
   useEffect(() => {
     async function loadMovies() {
       const results = await fetchFunction();
+
       setMovies(results);
     }
     loadMovies();
@@ -551,7 +558,7 @@ function useMovieList(fetchFunction, deps = []) {
 }
 function MovieSlider({ title, fetchFunction, idSlider }) {
   const movies = useMovieList(fetchFunction);
-  console.log(movies);
+
   return (
     <section className={`card-slider-${idSlider}`}>
       <div className="swiper cardSwiper">
@@ -568,14 +575,17 @@ function MovieSlider({ title, fetchFunction, idSlider }) {
                 ? `https://image.tmdb.org/t/p/w500${e.poster_path}`
                 : `https://demofree.sirv.com/nope-not-here.jpg`;
               return (
-                <SwiperSlide>
-                  <a href="#" className="swiper-slide">
+                <SwiperSlide key={e.id}>
+                  <Link
+                    to={`/detail/${e.media_type}/${e.id}`}
+                    className="swiper-slide"
+                  >
                     <img
                       src={poster}
                       alt=""
                       className="card-img modal-detail-button"
                     />
-                  </a>
+                  </Link>
                 </SwiperSlide>
               );
             })}
@@ -584,6 +594,151 @@ function MovieSlider({ title, fetchFunction, idSlider }) {
       </div>
     </section>
   );
+}
+function useMovieDetail(type, id) {
+  const [movie, setMovie] = useState(null);
+
+  useEffect(() => {
+    async function loadDetail() {
+      const results = await getDetail(id, type);
+
+      setMovie(results);
+    }
+    loadDetail();
+  }, [type, id]);
+  return movie;
+}
+function MovieDetail() {
+  const { type, id } = useParams();
+  const data = useMovieDetail(type, id);
+
+  if (!data) return <p>Loading...</p>;
+  const title = data.title || data.name;
+  const date = data.last_air_date || data.release_date;
+  const original =
+    data.origin_country == "US"
+      ? `.`
+      : data.original_name || data.original_title;
+
+  const genre = data.genres
+    .map((i) => i)
+    .map((g) => g.name)
+    .join(", ");
+  const rating = Math.round(data.vote_average * 10);
+  const backdrop = data.belongs_to_collection
+    ? data.belongs_to_collection.backdrop_path
+    : data.backdrop_path;
+  const bgDetail = `https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/${backdrop}`;
+  const poster = `https://media.themoviedb.org/t/p/w300_and_h450_face/${data.poster_path}`;
+  const video =
+    data.videos.results.find(
+      (item) => item.site === "YouTube" && item.type === "Trailer",
+    ) ||
+    data.videos.results.find(
+      (item) => item.site === "YouTube" && item.type === "Teaser",
+    );
+  const trailerEmbedUrl = video
+    ? `https://www.youtube.com/embed/${video.key}`
+    : null;
+
+  return (
+    <>
+      <div
+        className="info-body"
+        style={{
+          backgroundImage: `url(${bgDetail})`,
+        }}
+      >
+        <div className="container-detail">
+          <div id="movie-detail">
+            <div className="mov-poster">
+              <img src={poster} alt={title} />
+            </div>
+            <div className="mov-info">
+              <div className="mov-top">
+                <div className="mov-title">
+                  <h2>
+                    <a href="" className="title">
+                      {title}
+                    </a>
+                  </h2>
+                  <span>({date.slice(0, 4)})</span>
+                </div>
+                <div className="original-name">{original}</div>
+                <div className="mov-fact">
+                  <div className="certification">{rating}</div>
+                  <div className="genres">{genre}</div>
+                </div>
+              </div>
+              <div className="mov-middle">
+                <div className="mov-action">
+                  <a href="" className="mov-bookmark action">
+                    <i className="bi bi-bookmark-fill"></i>
+                  </a>
+                  <a href="" className="mov-loves action">
+                    <i className="bi bi-heart-fill"></i>
+                  </a>
+                  <div className="trailer">
+                    <span className="mov-play">
+                      <i className="bi bi-play-fill"></i>
+                      Play Trailer
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="mov-bottom">
+                <div className="header-info">
+                  <h3 dir="auto">Overview</h3>
+                </div>
+                <div className="overview">
+                  <p>{data.overview}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="overlay-trailer" data-src="${trailerEmbedUrl}"></div>`
+    </>
+  );
+}
+function showEpisodes(data, dataSeason) {
+  const nfound = `https://static.vecteezy.com/system/resources/thumbnails/004/639/366/small/error-404-not-found-text-design-vector.jpg`;
+
+  bodyList.innerHTML = dataSeason
+    .map((n, i) => {
+      const isOpen = n.season_number === 1 ? "open" : "";
+
+      const episodeHTML = n.episodes
+        .map((e) => {
+          const imgEpisode = e.still_path
+            ? `https://media.themoviedb.org/t/p/w227_and_h127_face/${e.still_path}`
+            : nfound;
+          const rating = e.vote_average ? Math.round(e.vote_average * 10) : "-";
+          const runtime = e.runtime ? e.runtime : "-";
+          return ``;
+        })
+        .join("");
+
+      return `<a href="watch.html?id=${id}&season=${n.season_number}" class="season" data-season="${n.season_number}">
+      <div class="season-card">
+      <div class="season-img"><img src="https://media.themoviedb.org/t/p/w300_and_h450_face/${n.poster_path}"></div>
+      <div class="season-detail">
+   
+       <div class="detail-top">
+        <div class="season-title">${n.name}</div>
+        <div class="season-hot">
+         <div class="season-date">${n.air_date ? n.air_date : "No Date "}</div>
+         <div class="season-date">${n.episodes.length} Episode's</div>
+        </div>
+        
+      </div>
+      <div class="season-overview">${n.overview}</div>
+      </div>
+      </div>
+      </a>`;
+    })
+    .join("");
 }
 function App() {
   return (
@@ -600,6 +755,7 @@ function App() {
           }
         />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/detail/:type/:id" element={<MovieDetail />}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
