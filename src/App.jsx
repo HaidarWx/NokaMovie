@@ -8,6 +8,7 @@ import {
   getTrendingPopular,
   getTrendingTopRated,
   getDetail,
+  getSeasons,
 } from "../src/api/tmdb.jsx";
 import { useEffect } from "react";
 
@@ -68,14 +69,14 @@ function NavBar() {
             <div className="navbar-left">
               <i className="bi bi-list" id="menuToggle"></i>
 
-              <a href="index.html" className="navbar-icon">
+              <Link className="navbar-icon">
                 <img
                   src="src/assets/image/madoka-icon.gif"
                   alt="Icon"
                   className="img-icon"
                 />
                 <span className="logo-title">NokaMovie</span>
-              </a>
+              </Link>
               <div className="navbar-content-left"></div>
             </div>
             <div className="navbar-right">
@@ -545,7 +546,6 @@ function Footer() {
 
 function useMovieList(fetchFunction, deps = []) {
   const [movies, setMovies] = useState([]);
-  console.log(fetchFunction);
   useEffect(() => {
     async function loadMovies() {
       const results = await fetchFunction();
@@ -608,11 +608,30 @@ function useMovieDetail(type, id) {
   }, [type, id]);
   return movie;
 }
+function useSeason(data, id, type) {
+  const [episode, setEpisode] = useState([]);
+  const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
+
+  useEffect(() => {
+    if (type === "movie") return;
+    async function loadSeason() {
+      const episodeDetails = await Promise.all(
+        seasonNumber.map((n) => getSeasons(id, type, n)),
+      );
+      setEpisode(episodeDetails);
+    }
+    loadSeason();
+  }, [data, id, type]);
+  return episode;
+}
+
 function MovieDetail() {
   const { type, id } = useParams();
   const data = useMovieDetail(type, id);
+  const seasons = type === "tv" ? useSeason(data, id, type) : []; //if this film is tv, will make list of seasons
 
   if (!data) return <p>Loading...</p>;
+
   const title = data.title || data.name;
   const date = data.last_air_date || data.release_date;
   const original =
@@ -698,47 +717,56 @@ function MovieDetail() {
           </div>
         </div>
       </div>
-      <div className="overlay-trailer" data-src="${trailerEmbedUrl}"></div>`
+      {type === "tv" && (
+        <div className=".info-episode">
+          <SeasonList seasons={seasons} id={id}></SeasonList>
+        </div>
+      )}
+      <div className="overlay-trailer" data-src={trailerEmbedUrl}></div>
     </>
   );
 }
-function showEpisodes(data, dataSeason) {
-  const nfound = `https://static.vecteezy.com/system/resources/thumbnails/004/639/366/small/error-404-not-found-text-design-vector.jpg`;
+function SeasonList({ seasons, id }) {
+  return (
+    <>
+      <div className=".episode-wrapper">
+        {seasons.map((n) => {
+          const imgEpisode = n.poster_path
+            ? `https://media.themoviedb.org/t/p/w300_and_h450_face/${n.poster_path}`
+            : `https://static.vecteezy.com/system/resources/thumbnails/004/639/366/small/error-404-not-found-text-design-vector.jpg`;
 
-  bodyList.innerHTML = dataSeason
-    .map((n, i) => {
-      const isOpen = n.season_number === 1 ? "open" : "";
-
-      const episodeHTML = n.episodes
-        .map((e) => {
-          const imgEpisode = e.still_path
-            ? `https://media.themoviedb.org/t/p/w227_and_h127_face/${e.still_path}`
-            : nfound;
-          const rating = e.vote_average ? Math.round(e.vote_average * 10) : "-";
-          const runtime = e.runtime ? e.runtime : "-";
-          return ``;
-        })
-        .join("");
-
-      return `<a href="watch.html?id=${id}&season=${n.season_number}" class="season" data-season="${n.season_number}">
-      <div class="season-card">
-      <div class="season-img"><img src="https://media.themoviedb.org/t/p/w300_and_h450_face/${n.poster_path}"></div>
-      <div class="season-detail">
-   
-       <div class="detail-top">
-        <div class="season-title">${n.name}</div>
-        <div class="season-hot">
-         <div class="season-date">${n.air_date ? n.air_date : "No Date "}</div>
-         <div class="season-date">${n.episodes.length} Episode's</div>
-        </div>
-        
+          return (
+            <Link
+              href="watch.html?id=${id}&season=${n.season_number}"
+              className="season"
+              data-season={n.season_number}
+              key={n.season_number}
+            >
+              <div className="season-card">
+                <div className="season-img">
+                  <img src={imgEpisode} />
+                </div>
+                <div className="season-detail">
+                  <div className="detail-top">
+                    <div className="season-title">{n.name}</div>
+                    <div className="season-hot">
+                      <div className="season-date">
+                        {n.air_date ? n.air_date : "No Date "}
+                      </div>
+                      <div className="season-date">
+                        {n.episodes.length} Episode's
+                      </div>
+                    </div>
+                  </div>
+                  <div className="season-overview">{n.overview}</div>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
       </div>
-      <div class="season-overview">${n.overview}</div>
-      </div>
-      </div>
-      </a>`;
-    })
-    .join("");
+    </>
+  );
 }
 function App() {
   return (

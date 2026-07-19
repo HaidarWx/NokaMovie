@@ -137,6 +137,21 @@ export async function getDetail(id, type) {
     throw err;
   }
 }
+
+export async function getSeasons(id, type, seasonNumber) {
+  if (type !== "tv") {
+    return;
+  }
+
+  const res = await fetch(
+    `${BASE_URL}/tv/${id}/season/${seasonNumber}?api_key=${API_KEY}`,
+  );
+
+  const data = await res.json();
+
+  return data;
+}
+
 function addMediaType(data, type) {
   return data.results.map((item) => ({
     ...item,
