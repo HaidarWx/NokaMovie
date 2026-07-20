@@ -9,6 +9,7 @@ import {
   getTrendingTopRated,
   getDetail,
   getSeasons,
+  getSeasonDetail,
 } from "../src/api/tmdb.jsx";
 import { useEffect } from "react";
 
@@ -610,6 +611,7 @@ function useMovieDetail(type, id) {
 }
 function useSeason(data, id, type) {
   const [episode, setEpisode] = useState([]);
+
   const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
 
   useEffect(() => {
@@ -624,12 +626,23 @@ function useSeason(data, id, type) {
   }, [data, id, type]);
   return episode;
 }
+function useSeasonDetail(id, seasonNumber) {
+  const [episode, setEpisode] = useState([]);
 
+  useEffect(() => {
+    async function loadSeasonDetail() {
+      const seasonDetail = await getSeasonDetail(id, seasonNumber);
+      setEpisode(seasonDetail);
+    }
+    loadSeasonDetail();
+  }, [id, seasonNumber]);
+  return episode;
+}
 function MovieDetail() {
   const { type, id } = useParams();
   const data = useMovieDetail(type, id);
   const seasons = type === "tv" ? useSeason(data, id, type) : []; //if this film is tv, will make list of seasons
-
+  console.log(data);
   if (!data) return <p>Loading...</p>;
 
   const title = data.title || data.name;
@@ -719,14 +732,14 @@ function MovieDetail() {
       </div>
       {type === "tv" && (
         <div className=".info-episode">
-          <SeasonList seasons={seasons} id={id}></SeasonList>
+          <SeasonList seasons={seasons} id={id} type={type}></SeasonList>
         </div>
       )}
       <div className="overlay-trailer" data-src={trailerEmbedUrl}></div>
     </>
   );
 }
-function SeasonList({ seasons, id }) {
+function SeasonList({ seasons, id, type }) {
   return (
     <>
       <div className=".episode-wrapper">
@@ -737,10 +750,10 @@ function SeasonList({ seasons, id }) {
 
           return (
             <Link
-              href="watch.html?id=${id}&season=${n.season_number}"
               className="season"
               data-season={n.season_number}
               key={n.season_number}
+              to={`/season/${n.season_number}/${id}`}
             >
               <div className="season-card">
                 <div className="season-img">
@@ -768,6 +781,86 @@ function SeasonList({ seasons, id }) {
     </>
   );
 }
+
+function SeasonDetail() {
+  const { seasonNumber, id } = useParams();
+  const detail = useMovieDetail("tv", id);
+  const seasons = useSeasonDetail(id, seasonNumber);
+
+  return (
+    <>
+      <div className="season-container">
+        <SeasonLayout dataSeason={seasons} dataDetail={detail}></SeasonLayout>
+      </div>
+    </>
+  );
+}
+function SeasonLayout({ dataSeason, dataDetail }) {
+  if (!dataDetail) return <p>Loading...</p>;
+  const title = dataDetail.name;
+  const seasonNumber = dataSeason.name;
+  const poster = `https://media.themoviedb.org/t/p/w300_and_h450_face/${dataSeason.poster_path}`;
+  const date = dataSeason.air_date;
+  const rating = Math.round(dataSeason.vote_average * 10);
+  const backdrop = dataDetail.belongs_to_collection
+    ? dataDetail.belongs_to_collection.backdrop_path
+    : dataDetail.backdrop_path;
+
+  /* const backdrop = data.belongs_to_collection
+    ? data.belongs_to_collection.backdrop_path
+    : data.backdrop_path; */
+  /* const video =
+    data.videos.results.find(
+      (item) => item.site === "YouTube" && item.type === "Trailer",
+    ) ||
+    data.videos.results.find(
+      (item) => item.site === "YouTube" && item.type === "Teaser",
+    ); */
+  /*   const trailerEmbedUrl = video
+    ? `https://www.youtube.com/embed/${video.key}`
+    : null; */
+
+  return (
+    <div className="info-body">
+      <div className="container-detail">
+        <div id="movie-detail">
+          <div className="mov-poster">
+            <img src={poster} alt={title} />
+          </div>
+          <div className="mov-info">
+            <div className="mov-top">
+              <div className="mov-title">
+                <h2>
+                  <a href="#" className="title">
+                    {title}
+                  </a>
+                </h2>
+                <h2>
+                  <a href="#" className="title">
+                    {seasonNumber}
+                  </a>
+                </h2>
+                <span>({date ? date.slice(0, 4) : "-"})</span>
+              </div>
+              <div className="mov-fact">
+                <div className="certification">{rating.toString()}</div>
+              </div>
+            </div>
+            <div className="mov-bottom">
+              <div className="overview">
+                <p>
+                  {dataSeason.overview
+                    ? dataSeason.overview
+                    : dataDetail.overview}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 function App() {
   return (
     <BrowserRouter>
@@ -784,6 +877,10 @@ function App() {
         />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/detail/:type/:id" element={<MovieDetail />}></Route>
+        <Route
+          path="/season/:seasonNumber/:id"
+          element={<SeasonDetail />}
+        ></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
