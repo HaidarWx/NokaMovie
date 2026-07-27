@@ -612,7 +612,7 @@ function useMovieDetail(type, id) {
 }
 function useSeason(data, id, type) {
   const [episode, setEpisode] = useState([]);
-
+  if (type === "movie") return;
   const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
 
   useEffect(() => {
@@ -628,7 +628,7 @@ function useSeason(data, id, type) {
   return episode;
 }
 function useSeasonDetail(id, seasonNumber) {
-  const [episode, setEpisode] = useState([]);
+  const [episode, setEpisode] = useState(null);
 
   useEffect(() => {
     async function loadSeasonDetail() {
@@ -642,7 +642,9 @@ function useSeasonDetail(id, seasonNumber) {
 function MovieDetail() {
   const { type, id } = useParams();
   const data = useMovieDetail(type, id);
-  const seasons = type === "tv" ? useSeason(data, id, type) : []; //if this film is tv, will make list of seasons
+  const seasons = useSeason(data, id, type); //if this film is tv, will make list of seasons
+  const [showTrailer, setShowTrailer] = useState(false);
+  console.log(showTrailer);
   console.log(data);
   if (!data) return <p>Loading...</p>;
 
@@ -711,7 +713,7 @@ function MovieDetail() {
                   <a href="" className="mov-loves action">
                     <i className="bi bi-heart-fill"></i>
                   </a>
-                  <div className="trailer">
+                  <div className="trailer" onClick={() => setShowTrailer(true)}>
                     <span className="mov-play">
                       <i className="bi bi-play-fill"></i>
                       Play Trailer
@@ -736,7 +738,33 @@ function MovieDetail() {
           <SeasonList seasons={seasons} id={id} type={type}></SeasonList>
         </div>
       )}
-      <div className="overlay-trailer" data-src={trailerEmbedUrl}></div>
+      {showTrailer && (
+        <div
+          className="overlay-trailer"
+          data-src={trailerEmbedUrl}
+          onClick={() => setShowTrailer(false)}
+        >
+          {trailerEmbedUrl ? (
+            <div
+              className="trailer-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe
+                width="560"
+                height="315"
+                src={`${trailerEmbedUrl}?autoplay=0`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="encrypted-media;autoplay"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            </div>
+          ) : (
+            <div className="no-trailer">Tidak Punya Trailer!</div>
+          )}
+        </div>
+      )}
     </>
   );
 }
@@ -785,8 +813,9 @@ function SeasonList({ seasons, id, type }) {
 function SeasonDetail() {
   const { seasonNumber, id } = useParams();
   const detail = useMovieDetail("tv", id);
-  const seasons = useSeasonDetail(id, seasonNumber);
 
+  const seasons = useSeasonDetail(id, seasonNumber);
+  if (!seasons) return;
   return (
     <>
       <div className="season-container">
@@ -919,12 +948,13 @@ function StreamDetail() {
   const { id, seasonNumber, episodeNumber } = useParams();
   const dataSeason = useSeasonDetail(id, seasonNumber);
   const dataMovie = useMovieDetail("tv", id);
-  if (!dataMovie) return;
+  if (!dataMovie || !dataSeason?.episodes) return <p>Loading UwU</p>;
   console.log(dataSeason);
   console.log(dataMovie);
   return (
     <div className="watch-layout">
       <StreamLayout
+        key={`${seasonNumber}-${episodeNumber}`}
         dataEpisode={dataSeason.episodes[episodeNumber - 1]}
         dataSeason={dataSeason}
         dataMovie={dataMovie}
@@ -936,7 +966,10 @@ function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
   const video = `https://image.tmdb.org/t/p/w500/${dataEpisode.still_path}`;
   const title = dataEpisode.name;
   const date = dataEpisode.air_date;
-  const age = dataMovie.content_ratings.results[2].rating;
+  const age =
+    dataMovie.content_ratings.results.find((r) => r.iso_3166_1 === "US")
+      ?.rating || "N/A";
+  console.log(dataMovie.content_ratings.results);
   const poster_season = dataSeason.poster_path;
   const poster = `https://media.themoviedb.org/t/p/w300_and_h450_face/${poster_season}`;
   const genres = dataMovie.genres
@@ -952,7 +985,7 @@ function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
     if (inputText === "") return;
 
     const newComment = {
-      id: Date.now,
+      id: Date.now(),
       text: inputText,
       date: new Date().toLocaleDateString("id-ID"),
     };
@@ -1000,8 +1033,9 @@ function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
           </div>
           <div className="serial-detail">
             <h3>Serial Detail</h3>
-            <a
-              href="watch.html?id=${id}&season=${season}"
+            <Link
+              to={`/season/${dataEpisode.season_number}/${dataEpisode.show_id}`}
+              key={`${dataSeason.name}`}
               className="serial-poster"
             >
               <div className="serial-left">
@@ -1016,7 +1050,7 @@ function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
                   <div className="serial-year">{dataSeason.air_date}</div>
                 </div>
               </div>
-            </a>
+            </Link>
             <div className="serial-info">
               <p>{dataEpisode.overview}</p>
             </div>
@@ -1100,6 +1134,25 @@ function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
       </aside>
     </>
   );
+}
+function loadTrailer(trailerEmbedUrl) {
+  return `<iframe
+          width="560"
+          height="315"
+          src="${trailerEmbedUrl}"
+          title="YouTube video player"
+          frameborder="0"
+          allow="
+            accelerometer;
+            autoplay;
+            clipboard-write;
+            encrypted-media;
+            gyroscope;
+            picture-in-picture;
+            web-share;"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>`;
 }
 function App() {
   return (

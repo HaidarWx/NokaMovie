@@ -250,22 +250,23 @@ a {
 }
 
 .overlay-trailer {
+  display: flex;
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: none;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.4);
 }
-.overlay-trailer iframe.active {
-  display: none;
+.no-trailer {
+  padding: 1rem;
+  background-color: pink;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
 }
-
-.overlay-trailer.active {
-  display: flex;
-}
-
 .mov-play {
   cursor: pointer;
 }
