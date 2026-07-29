@@ -100,7 +100,10 @@ nav {
   background: transparent;
   padding: 10px 14px;
 }
-
+.navbar-search button {
+  border: none;
+  background-color: transparent;
+}
 .search-button {
   font-size: 1rem;
   cursor: pointer;
@@ -173,6 +176,12 @@ nav {
   }
   .search-button-nav-mobile.inactive {
     display: none;
+  }
+  .img-pp-mobile.inactive {
+    display: none;
+  }
+  .navbar-search-mobile-form {
+    display: flex;
   }
   .search-button-mobile {
     cursor: pointer;

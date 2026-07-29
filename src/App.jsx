@@ -55,8 +55,16 @@ function swiper() {
 }
 function NavBar() {
   const [keyword, setKeyword] = useState("");
-
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [isMobileButtonSearchOpen, setIsMobileButtonSearchOpen] =
+    useState(false);
+  console.log(isMobileMenuOpen);
   const navigate = useNavigate();
+
+  function toggleMobileMenu(prev) {
+    setIsMobileMenuOpen((prev) => !prev);
+  }
   function handleSearch(event) {
     event.preventDefault();
     const inputUser = keyword.trim().toLowerCase().replace(/\s+/g, "-");
@@ -69,7 +77,11 @@ function NavBar() {
         <div className="navbar-container">
           <div className="navbar-content">
             <div className="navbar-left">
-              <i className="bi bi-list" id="menuToggle"></i>
+              <i
+                className="bi bi-list"
+                id="menuToggle"
+                onClick={() => setIsMobileMenuOpen(true)}
+              ></i>
 
               <Link className="navbar-icon">
                 <img
@@ -112,51 +124,92 @@ function NavBar() {
                 </a>
               </div>
               <div className="navbar-pfp">
-                <img src="image/madoka_pfp.jpg" alt="" className="img-pp" />
+                <img
+                  src="src/assets/image/madoka_pfp.jpg"
+                  alt=""
+                  className="img-pp"
+                />
               </div>
             </div>
           </div>
         </div>
-        <div className="overlay-navbar" id="overlayNavbar"></div>
 
-        <div className="mobile-content-left asides" id="mobileMenu">
-          <div className="navbar-icon">
-            <img src="image/madoka-icon.gif" alt="Icon" className="img-icon" />
-            <span className="logo-title">NokaMovie</span>
+        <>
+          <div
+            className={`overlay-navbar ${isMobileMenuOpen ? "active" : ""}`}
+            id="overlayNavbar"
+            onClick={() => setIsMobileMenuOpen(false)}
+          ></div>
+          <div
+            className={`mobile-content-left asides ${isMobileMenuOpen ? "active" : ""}`}
+            id="mobileMenu"
+          >
+            <div className="navbar-icon">
+              <img
+                src="image/madoka-icon.gif"
+                alt="Icon"
+                className="img-icon"
+              />
+              <span className="logo-title">NokaMovie</span>
+            </div>
+            <div className="mobile-box-left"></div>
+            <a href="index.html">
+              <i className="bi bi-house-door-fill"></i>Home
+            </a>
+            <a href="/">
+              <i className="bi bi-heart"></i>Favorite
+            </a>
+            <a href="/">
+              <i className="bi bi-list-ul"></i>Watchlist
+            </a>
+            <a href="/">
+              <i className="bi bi-clock-history"></i>History
+            </a>
+            <a href="/">
+              <i className="bi bi-person-circle"></i>Profile
+            </a>
           </div>
-          <div className="mobile-box-left"></div>
-          <a href="index.html">
-            <i className="bi bi-house-door-fill"></i>Home
-          </a>
-          <a href="/">
-            <i className="bi bi-heart"></i>Favorite
-          </a>
-          <a href="/">
-            <i className="bi bi-list-ul"></i>Watchlist
-          </a>
-          <a href="/">
-            <i className="bi bi-clock-history"></i>History
-          </a>
-          <a href="/">
-            <i className="bi bi-person-circle"></i>Profile
-          </a>
-        </div>
+        </>
+
         <div className="navbar-mobile-right">
-          <div className="navbar-search-mobile">
-            <input
-              type="text"
-              className="form-control input-keyword-mobile"
-              placeholder="Search..."
-            />
-            <i
-              className="bi bi-search search-button-mobile"
-              id="searchButtonMobile"
-            ></i>
+          <div
+            className={`navbar-search-mobile ${isMobileSearchOpen ? "active" : ""}`}
+          >
+            <form
+              className={`navbar-search-mobile-form`}
+              action=""
+              onSubmit={handleSearch}
+            >
+              <input
+                type="text"
+                className="form-control input-keyword-mobile"
+                placeholder="Search..."
+                value={keyword}
+                onChange={(event) => setKeyword(event.target.value)}
+              />
+              <button type="submit">
+                <i
+                  className="bi bi-search search-button-mobile"
+                  id="searchButtonMobile"
+                ></i>
+              </button>
+            </form>
           </div>
-          <i className="bi bi-search search-button-nav-mobile"></i>
-          <img src="image/madoka_pfp.jpg" alt="" className="img-pp-mobile" />
+          <i
+            className={`bi bi-search search-button-nav-mobile ${isMobileButtonSearchOpen ? "inactive" : ""} `}
+            onClick={() => {
+              setIsMobileSearchOpen(true);
+              setIsMobileButtonSearchOpen(true);
+            }}
+          ></i>
+          <img
+            src="image/madoka_pfp.jpg"
+            alt=""
+            className={`img-pp-mobile ${isMobileButtonSearchOpen ? "inactive" : ""}`}
+          />
         </div>
       </nav>
+
       <div className="overlay-global" id="overlayGlobal"></div>
     </>
   );
@@ -273,12 +326,13 @@ function HeroMovieSlider() {
                 <div className="slide-genre">{genre}</div>
                 <p className="slide-info">{e.overview}</p>
                 <div className="slide-buttons">
-                  <a href="#" className="slide-button-1">
-                    <i className="bi bi-play-fill"></i> Watch Now
-                  </a>
-                  <a href="#" className="slide-button-2 modal-detail-button">
+                  <Link
+                    to={`/detail/${e.media_type}/${e.id}`}
+                    key={`${e.media_type}-${e.id}`}
+                    className="slide-button-2 modal-detail-button"
+                  >
                     More Info
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -612,11 +666,10 @@ function useMovieDetail(type, id) {
 }
 function useSeason(data, id, type) {
   const [episode, setEpisode] = useState([]);
-  if (type === "movie") return;
-  const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
 
   useEffect(() => {
     if (type === "movie") return;
+    const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
     async function loadSeason() {
       const episodeDetails = await Promise.all(
         seasonNumber.map((n) => getSeasons(id, type, n)),
@@ -949,8 +1002,7 @@ function StreamDetail() {
   const dataSeason = useSeasonDetail(id, seasonNumber);
   const dataMovie = useMovieDetail("tv", id);
   if (!dataMovie || !dataSeason?.episodes) return <p>Loading UwU</p>;
-  console.log(dataSeason);
-  console.log(dataMovie);
+
   return (
     <div className="watch-layout">
       <StreamLayout
