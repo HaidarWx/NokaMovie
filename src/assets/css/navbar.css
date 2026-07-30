@@ -183,6 +183,10 @@ nav {
   .navbar-search-mobile-form {
     display: flex;
   }
+  .navbar-search-mobile-form button {
+    border: none;
+    background-color: transparent;
+  }
   .search-button-mobile {
     cursor: pointer;
   }

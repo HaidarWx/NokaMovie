@@ -146,7 +146,7 @@ function NavBar() {
           >
             <div className="navbar-icon">
               <img
-                src="image/madoka-icon.gif"
+                src="src/assets/image/madoka-icon.gif"
                 alt="Icon"
                 className="img-icon"
               />
@@ -203,7 +203,7 @@ function NavBar() {
             }}
           ></i>
           <img
-            src="image/madoka_pfp.jpg"
+            src="src/assets/image/madoka_pfp.jpg"
             alt=""
             className={`img-pp-mobile ${isMobileButtonSearchOpen ? "inactive" : ""}`}
           />
@@ -599,7 +599,6 @@ function Footer() {
     </footer>
   );
 }
-
 function useMovieList(fetchFunction, deps = []) {
   const [movies, setMovies] = useState([]);
   useEffect(() => {
@@ -622,9 +621,17 @@ function MovieSlider({ title, fetchFunction, idSlider }) {
         <div className="swiper-wrapper">
           <Swiper
             spaceBetween={0}
-            slidesPerView={6}
             modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
             navigation
+            slidesPerView={2}
+            breakpoints={{
+              768: {
+                slidesPerView: 2, // tablet ke atas
+              },
+              1024: {
+                slidesPerView: 6, // desktop
+              },
+            }}
           >
             {movies.map((e) => {
               const poster = e.poster_path
