@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   getMovies,
   getPopularMovies,
@@ -11,7 +11,6 @@ import {
   getSeasons,
   getSeasonDetail,
 } from "../src/api/tmdb.jsx";
-import { useEffect } from "react";
 
 import {
   BrowserRouter,
@@ -37,22 +36,6 @@ import {
 // Import Swiper styles
 import "swiper/css";
 
-function swiper() {
-  return (
-    <Swiper
-      spaceBetween={50}
-      slidesPerView={3}
-      onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
-    >
-      <SwiperSlide>Slide 1</SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>Slide 3</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      ...
-    </Swiper>
-  );
-}
 function NavBar() {
   const [keyword, setKeyword] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -704,7 +687,16 @@ function MovieDetail() {
   const data = useMovieDetail(type, id);
   const seasons = useSeason(data, id, type); //if this film is tv, will make list of seasons
   const [showTrailer, setShowTrailer] = useState(false);
-  console.log(showTrailer);
+  const [wishlist, setWishlist] = useState(() => {
+    const saveWishlist = localStorage.getItem("wishlist");
+
+    return saveWishlist ? JSON.parse(saveWishlist) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }, [wishlist]);
+
   console.log(data);
   if (!data) return <p>Loading...</p>;
 
@@ -735,6 +727,28 @@ function MovieDetail() {
   const trailerEmbedUrl = video
     ? `https://www.youtube.com/embed/${video.key}`
     : null;
+
+  function handleClickWishlist() {
+    const dataWishlist = {
+      id: id,
+      type: type,
+      title: title,
+      poster: poster,
+      isWishlist: true,
+    };
+    setWishlist((prevWishlist) => {
+      const isAlreadyWishlist = prevWishlist.some(
+        (item) => item.id === id && item.type === type,
+      );
+
+      if (isAlreadyWishlist) {
+        return prevWishlist.filter((item) => item.id !== id);
+      }
+
+      return [dataWishlist, ...prevWishlist];
+    });
+  }
+  const isCurrentMovieIsWishlist = wishlist.some((item) => item.id === id);
 
   return (
     <>
@@ -767,12 +781,17 @@ function MovieDetail() {
               </div>
               <div className="mov-middle">
                 <div className="mov-action">
-                  <a href="" className="mov-bookmark action">
-                    <i className="bi bi-bookmark-fill"></i>
-                  </a>
-                  <a href="" className="mov-loves action">
+                  <button
+                    onClick={() => handleClickWishlist()}
+                    className="mov-bookmark action"
+                  >
+                    <i
+                      className={`bi ${isCurrentMovieIsWishlist ? `bi-bookmark-fill` : `bi-bookmark`} `}
+                    ></i>
+                  </button>
+                  <Link key={date} className="mov-loves action">
                     <i className="bi bi-heart-fill"></i>
-                  </a>
+                  </Link>
                   <div className="trailer" onClick={() => setShowTrailer(true)}>
                     <span className="mov-play">
                       <i className="bi bi-play-fill"></i>
