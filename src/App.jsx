@@ -42,7 +42,7 @@ function NavBar() {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileButtonSearchOpen, setIsMobileButtonSearchOpen] =
     useState(false);
-  console.log(isMobileMenuOpen);
+
   const navigate = useNavigate();
 
   function toggleMobileMenu(prev) {
@@ -54,6 +54,7 @@ function NavBar() {
     if (!inputUser) return;
     navigate(`/search?query=${encodeURIComponent(inputUser)}`);
   }
+
   return (
     <>
       <nav className="navbar">
@@ -96,9 +97,9 @@ function NavBar() {
                 <a href="/" className="nav-sound">
                   <i className="bi bi-volume-up-fill"></i>
                 </a>
-                <a href="" className="nav-bookmark">
+                <Link to={`/wishlist/`} className="nav-bookmark">
                   <i className="bi bi-bookmark-fill"></i>
-                </a>
+                </Link>
                 <a href="" className="nav-loves">
                   <i className="bi bi-heart-fill"></i>
                 </a>
@@ -682,20 +683,11 @@ function useSeasonDetail(id, seasonNumber) {
   }, [id, seasonNumber]);
   return episode;
 }
-function MovieDetail() {
+function MovieDetail({ wishlist, onToggleWishlist }) {
   const { type, id } = useParams();
   const data = useMovieDetail(type, id);
   const seasons = useSeason(data, id, type); //if this film is tv, will make list of seasons
   const [showTrailer, setShowTrailer] = useState(false);
-  const [wishlist, setWishlist] = useState(() => {
-    const saveWishlist = localStorage.getItem("wishlist");
-
-    return saveWishlist ? JSON.parse(saveWishlist) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  }, [wishlist]);
 
   console.log(data);
   if (!data) return <p>Loading...</p>;
@@ -728,26 +720,6 @@ function MovieDetail() {
     ? `https://www.youtube.com/embed/${video.key}`
     : null;
 
-  function handleClickWishlist() {
-    const dataWishlist = {
-      id: id,
-      type: type,
-      title: title,
-      poster: poster,
-      isWishlist: true,
-    };
-    setWishlist((prevWishlist) => {
-      const isAlreadyWishlist = prevWishlist.some(
-        (item) => item.id === id && item.type === type,
-      );
-
-      if (isAlreadyWishlist) {
-        return prevWishlist.filter((item) => item.id !== id);
-      }
-
-      return [dataWishlist, ...prevWishlist];
-    });
-  }
   const isCurrentMovieIsWishlist = wishlist.some((item) => item.id === id);
 
   return (
@@ -782,7 +754,17 @@ function MovieDetail() {
               <div className="mov-middle">
                 <div className="mov-action">
                   <button
-                    onClick={() => handleClickWishlist()}
+                    onClick={() =>
+                      onToggleWishlist({
+                        id,
+                        type,
+                        title,
+                        poster,
+                        isCurrentMovieIsWishlist,
+                        date,
+                        original,
+                      })
+                    }
                     className="mov-bookmark action"
                   >
                     <i
@@ -1232,7 +1214,118 @@ function loadTrailer(trailerEmbedUrl) {
           allowfullscreen
         ></iframe>`;
 }
+
+function Wishlist({ wishlist, onToggleWishlist }) {
+  console.log(wishlist);
+
+  return (
+    <div
+      className="wish-container"
+      data-bs-toggle="modal"
+      data-bs-target="#movieDetailModal"
+    >
+      {wishlist.length > 0 ? (
+        wishlist.map((item) => {
+          const [
+            id,
+            type,
+            title,
+            poster,
+            isCurrentMovieIsWishlist,
+            date,
+            original,
+          ] = [
+            item.id,
+            item.type,
+            item.title,
+            item.poster,
+            item.isWishlist,
+            item.date,
+            item.original,
+          ];
+          console.log(isCurrentMovieIsWishlist);
+          return (
+            <Link key={id} to={`/detail/${type}/${id}`}>
+              <div className="wish-card">
+                <div className="wish-poster">
+                  <img src={poster} alt="" />
+                </div>
+                <div className="wish-detail">
+                  <div className="wish-top">
+                    <div className="movie-title">
+                      <h2>
+                        {title}
+                        <span className="title">({original})</span>
+                      </h2>
+                    </div>
+                    <span className="wish-date">{date}</span>
+                  </div>
+                  <div className="wish-bottom">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        onToggleWishlist({
+                          id,
+                          type,
+                          title,
+                          poster,
+                          isCurrentMovieIsWishlist,
+                          date,
+                          original,
+                        });
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          );
+        })
+      ) : (
+        <div>Tidak ada wishlist</div>
+      )}
+    </div>
+  );
+  console.log(wishlist);
+}
 function App() {
+  const [wishlist, setWishlist] = useState(() => {
+    const saveWishlist = localStorage.getItem("wishlist");
+
+    return saveWishlist ? JSON.parse(saveWishlist) : [];
+  });
+  useEffect(() => {
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }, [wishlist]);
+  function toggleWishlist(movie) {
+    const { id, type, title, poster, isWishlist, date, original } = movie;
+
+    const dataWishlist = {
+      id: id,
+      type: type,
+      title: title,
+      poster: poster,
+      isWishlist: true,
+      date: date,
+      original: original,
+    };
+    setWishlist((prevWishlist) => {
+      const isAlreadyWishlist = prevWishlist.some(
+        (item) => item.id === id && item.type === type,
+      );
+      console.log(isAlreadyWishlist);
+      if (isAlreadyWishlist) {
+        return prevWishlist.filter((item) => item.id !== id);
+      }
+
+      return [dataWishlist, ...prevWishlist];
+    });
+  }
+
   return (
     <BrowserRouter>
       <NavBar />
@@ -1247,7 +1340,15 @@ function App() {
           }
         />
         <Route path="/search" element={<SearchResults />} />
-        <Route path="/detail/:type/:id" element={<MovieDetail />}></Route>
+        <Route
+          path="/detail/:type/:id"
+          element={
+            <MovieDetail
+              wishlist={wishlist}
+              onToggleWishlist={toggleWishlist}
+            />
+          }
+        ></Route>
         <Route
           path="/season/:seasonNumber/:id"
           element={<SeasonDetail />}
@@ -1255,6 +1356,12 @@ function App() {
         <Route
           path="/stream/:id/:seasonNumber/:episodeNumber"
           element={<StreamDetail />}
+        ></Route>
+        <Route
+          element={
+            <Wishlist wishlist={wishlist} onToggleWishlist={toggleWishlist} />
+          }
+          path={"/wishlist/"}
         ></Route>
       </Routes>
       <Footer />

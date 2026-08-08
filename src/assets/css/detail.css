@@ -113,7 +113,9 @@ a {
   font-size: 20px;
   font-weight: 600;
 }
-
+button {
+  cursor: pointer;
+}
 .overview p {
   line-height: 1.6;
 }
