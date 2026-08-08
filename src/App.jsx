@@ -20,7 +20,6 @@ import {
   useSearchParams,
   Link,
   useParams,
-  data,
 } from "react-router-dom";
 
 // Import Swiper React components
@@ -31,7 +30,6 @@ import {
   Scrollbar,
   A11y,
   Autoplay,
-  EffectFade,
 } from "swiper/modules";
 // Import Swiper styles
 import "swiper/css";
@@ -45,9 +43,6 @@ function NavBar() {
 
   const navigate = useNavigate();
 
-  function toggleMobileMenu(prev) {
-    setIsMobileMenuOpen((prev) => !prev);
-  }
   function handleSearch(event) {
     event.preventDefault();
     const inputUser = keyword.trim().toLowerCase().replace(/\s+/g, "-");
@@ -829,7 +824,7 @@ function MovieDetail({ wishlist, onToggleWishlist }) {
     </>
   );
 }
-function SeasonList({ seasons, id, type }) {
+function SeasonList({ seasons, id }) {
   return (
     <>
       <div className=".episode-wrapper">
@@ -895,8 +890,8 @@ function SeasonLayout({ dataSeason, dataDetail }) {
   const date = dataSeason.air_date;
   const rating = Math.round(dataSeason.vote_average * 10);
   const backdrop = dataDetail.belongs_to_collection
-    ? dataDetail.belongs_to_collection.backdrop_path
-    : dataDetail.backdrop_path;
+    ? `https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/${dataDetail.belongs_to_collection.backdrop_path}`
+    : `https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/${dataDetail.backdrop_path}`;
 
   /* const backdrop = data.belongs_to_collection
     ? data.belongs_to_collection.backdrop_path
@@ -913,7 +908,7 @@ function SeasonLayout({ dataSeason, dataDetail }) {
     : null; */
 
   return (
-    <div className="info-body">
+    <div className="info-body" style={{ backgroundImage: `url(${backdrop})` }}>
       <div className="container-detail">
         <div id="movie-detail">
           <div className="mov-poster">
@@ -962,7 +957,6 @@ function EpisodeList({ dataSeason }) {
   return (
     <div className=".episode-container">
       {dataEpisode.map((episode) => {
-        const isOpen = episode.season_number === 1 ? "open" : "";
         const rating = episode.vote_average
           ? Math.round(episode.vote_average * 10)
           : "-";
@@ -1195,26 +1189,6 @@ function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
     </>
   );
 }
-function loadTrailer(trailerEmbedUrl) {
-  return `<iframe
-          width="560"
-          height="315"
-          src="${trailerEmbedUrl}"
-          title="YouTube video player"
-          frameborder="0"
-          allow="
-            accelerometer;
-            autoplay;
-            clipboard-write;
-            encrypted-media;
-            gyroscope;
-            picture-in-picture;
-            web-share;"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        ></iframe>`;
-}
-
 function Wishlist({ wishlist, onToggleWishlist }) {
   console.log(wishlist);
 
@@ -1290,7 +1264,6 @@ function Wishlist({ wishlist, onToggleWishlist }) {
       )}
     </div>
   );
-  console.log(wishlist);
 }
 function App() {
   const [wishlist, setWishlist] = useState(() => {
@@ -1302,7 +1275,7 @@ function App() {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
   function toggleWishlist(movie) {
-    const { id, type, title, poster, isWishlist, date, original } = movie;
+    const { id, type, title, poster, date, original } = movie;
 
     const dataWishlist = {
       id: id,
