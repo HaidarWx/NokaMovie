@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Wishlist } from "./components/wishlist.jsx";
+import { Wishlist } from "./components/Wishlist.jsx";
 import { NavBar } from "./components/NavBar.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { SearchResults } from "./pages/SearchResults.jsx";
