@@ -19,7 +19,9 @@ export function NavBar() {
 
   return (
     <>
-      <nav className="navbar">
+      <nav
+        className={`navbar ${isMobileSearchOpen && isMobileButtonSearchOpen ? "active" : ""}`}
+      >
         <div className="navbar-container">
           <div className="navbar-content">
             <div className="navbar-left">
@@ -29,7 +31,10 @@ export function NavBar() {
                 onClick={() => setIsMobileMenuOpen(true)}
               ></i>
 
-              <Link className="navbar-icon">
+              <Link
+                to={`/`}
+                className={`navbar-icon ${isMobileButtonSearchOpen && isMobileSearchOpen ? "active" : ""}`}
+              >
                 <img
                   src="src/assets/image/madoka-icon.gif"
                   alt="Icon"
@@ -99,15 +104,23 @@ export function NavBar() {
               <span className="logo-title">NokaMovie</span>
             </div>
             <div className="mobile-box-left"></div>
-            <a href="index.html">
+            <Link
+              to={`/`}
+              key={"Home"}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
               <i className="bi bi-house-door-fill"></i>Home
-            </a>
+            </Link>
             <a href="/">
               <i className="bi bi-heart"></i>Favorite
             </a>
-            <a href="/">
+            <Link
+              to={`/wishlist/`}
+              key={"Wishlist"}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
               <i className="bi bi-list-ul"></i>Watchlist
-            </a>
+            </Link>
             <a href="/">
               <i className="bi bi-clock-history"></i>History
             </a>
@@ -151,12 +164,19 @@ export function NavBar() {
           <img
             src="src/assets/image/madoka_pfp.jpg"
             alt=""
-            className={`img-pp-mobile ${isMobileButtonSearchOpen ? "inactive" : ""}`}
+            className={`img-pp-mobile`}
           />
         </div>
       </nav>
 
-      <div className="overlay-global" id="overlayGlobal"></div>
+      <div
+        className={`overlay-global ${isMobileButtonSearchOpen ? "active" : ""}`}
+        id="overlayGlobal"
+        onClick={() => {
+          setIsMobileSearchOpen(false);
+          setIsMobileButtonSearchOpen(false);
+        }}
+      ></div>
     </>
   );
 }

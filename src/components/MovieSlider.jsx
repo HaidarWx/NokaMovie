@@ -25,10 +25,10 @@ export function MovieSlider({ title, fetchFunction, idSlider }) {
             spaceBetween={0}
             modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
             navigation
-            slidesPerView={2}
+            slidesPerView={3}
             breakpoints={{
               768: {
-                slidesPerView: 2, // tablet ke atas
+                slidesPerView: 3, // tablet ke atas
               },
               1024: {
                 slidesPerView: 6, // desktop

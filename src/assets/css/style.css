@@ -171,7 +171,7 @@ body.no-scroll {
 /* Card Content */
 .card-slider-day {
   background-color: #fad2d5;
-  padding: 2rem 1rem 1rem 1rem;
+  padding: 2rem 0.5rem 0.5rem 0.5rem;
   width: 100%;
 }
 .cardSwiper {
@@ -188,9 +188,9 @@ body.no-scroll {
   object-fit: cover;
   aspect-ratio: 2/3;
   width: 100%;
-  border-radius: 10px;
+
   cursor: pointer;
-  max-width: 170px;
+  max-width: 150px;
 }
 
 .cardSwiper h1 {
@@ -211,7 +211,7 @@ body.no-scroll {
 .card-slider-popular,
 .card-slider-topRated {
   background-color: #fad2d5;
-  padding: 1rem 1rem;
+  padding: 0.5rem;
   width: 100%;
 }
 .home-content.active {
@@ -273,5 +273,16 @@ body.no-scroll {
   .movie-bottom p {
     font-size: 12px;
     color: #8b8484;
+  }
+  .cardSwiper .swiper-button-prev {
+    left: 10px;
+    width: 1rem;
+  }
+  .cardSwiper .swiper-button-next {
+    right: 10px;
+    width: 1rem;
+  }
+  .card-img {
+    max-width: 115px;
   }
 }
