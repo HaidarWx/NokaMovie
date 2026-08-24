@@ -14,8 +14,9 @@ import {
 import "swiper/css";
 
 export function MovieSlider({ title, fetchFunction, idSlider }) {
-  const movies = useMovieList(fetchFunction);
-
+  const { movies, loading, error } = useMovieList(fetchFunction);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error!</p>;
   return (
     <section className={`card-slider-${idSlider}`}>
       <div className="swiper cardSwiper">

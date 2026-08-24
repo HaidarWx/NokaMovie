@@ -3,7 +3,7 @@ export function EpisodeList({ dataSeason }) {
   const nfound = `https://static.vecteezy.com/system/resources/thumbnails/004/639/366/small/error-404-not-found-text-design-vector.jpg`;
   const dataEpisode = dataSeason.episodes;
   if (!dataEpisode) return;
-  console.log(dataEpisode);
+  console.log(dataSeason);
 
   return (
     <div className=".episode-container">

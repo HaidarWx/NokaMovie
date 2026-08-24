@@ -5,8 +5,12 @@ import { useMovieList } from "../hooks/useMovieList.jsx";
 export function SearchResults() {
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("query");
-  const movies = useMovieList(() => getMovies(keyword), [keyword]);
-
+  const { movies, loading, error } = useMovieList(
+    () => getMovies(keyword),
+    [keyword],
+  );
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error!</p>;
   return (
     <>
       <div className="search-results container-film">

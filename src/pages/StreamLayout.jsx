@@ -93,7 +93,7 @@ export function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
               <p>{dataEpisode.overview}</p>
             </div>
             <div className="genre-list">
-              <div class="serial-genre">{genres}</div>
+              <div className="serial-genre">{genres}</div>
             </div>
           </div>
         </div>
@@ -130,24 +130,24 @@ export function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
             {comments.map((item) => {
               return (
                 <>
-                  <div class="comment-card">
-                    <div class="comment-icon">
-                      <i class="bi bi-person-circle"></i>
+                  <div className="comment-card">
+                    <div className="comment-icon">
+                      <i className="bi bi-person-circle"></i>
                     </div>
-                    <div class="comment-info">
-                      <div class="comment-name">Homudoka {item.date}</div>
-                      <div class="user-input">{item.text}</div>
-                      <div class="comment-reply">
-                        <div class="icon-love">
+                    <div className="comment-info">
+                      <div className="comment-name">Homudoka {item.date}</div>
+                      <div className="user-input">{item.text}</div>
+                      <div className="comment-reply">
+                        <div className="icon-love">
                           <i
-                            class="bi bi-heart"
+                            className="bi bi-heart"
                             onClick={() => setLoveCount(loveCount + 1)}
                           ></i>{" "}
                           {loveCount} like
                         </div>
 
-                        <div class="path">
-                          <i class="bi bi-flag"></i>
+                        <div className="path">
+                          <i className="bi bi-flag"></i>
                         </div>
                       </div>
                     </div>
@@ -161,12 +161,7 @@ export function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
       </section>
       <aside className="episode-panel">
         <div className="episode-list">
-          <a
-            href="watch.html?id=${id}&season=${season}"
-            className="all-episode"
-          >
-            All Episode
-          </a>
+          <span className="all-episode">All Episode</span>
           {episodeCards}
         </div>
       </aside>
