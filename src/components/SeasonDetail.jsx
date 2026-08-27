@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-
+import { BeatLoader } from "react-spinners";
 import { useMovieDetail } from "../hooks/useMovieDetail.jsx";
 import { useSeasonDetail } from "../hooks/UseSeasonDetail.jsx";
 import { SeasonLayout } from "../pages/SeasonLayout.jsx";
@@ -22,10 +22,38 @@ export function SeasonDetail() {
   );
 
   if (!seasons) return;
-  if (loading) return <p>Loading</p>;
-  if (error) return <p>Error {error.message}</p>;
-  if (loadingSeason) return <p>Loading</p>;
-  if (errorSeason) return <p>Error {errorSeason.message}</p>;
+  if (loading)
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "40px" }}
+      >
+        <BeatLoader color="pink" size={50} />
+      </div>
+    );
+  if (error)
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "40px" }}
+      >
+        <h1>Error {error.message}</h1>
+      </div>
+    );
+  if (loadingSeason)
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "40px" }}
+      >
+        <BeatLoader color="pink" size={50} />
+      </div>
+    );
+  if (errorSeason)
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "40px" }}
+      >
+        <h1>Error {error.message}</h1>
+      </div>
+    );
   return (
     <>
       <div className="season-container">

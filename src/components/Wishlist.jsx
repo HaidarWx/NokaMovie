@@ -72,7 +72,9 @@ export function Wishlist({ wishlist, onToggleWishlist }) {
           );
         })
       ) : (
-        <div>Tidak ada wishlist</div>
+        <div style={{ display: "flex", margin: "auto", height: "50vh" }}>
+          <h1 style={{ color: "pink", margin: "auto" }}>Tidak ada wishlist</h1>
+        </div>
       )}
     </div>
   );
