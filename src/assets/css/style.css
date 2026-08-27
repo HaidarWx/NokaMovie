@@ -17,10 +17,10 @@ body.no-scroll {
 .search-results {
   display: flex;
   flex-direction: column;
+  row-gap: 1rem;
+  margin: 1rem;
 }
-.search-results {
-  padding: 0rem 1rem;
-}
+
 .search-results a {
   text-decoration: none;
   color: #000000;
@@ -32,7 +32,6 @@ body.no-scroll {
   border: 1px solid grey;
   border-radius: 8px;
   overflow: hidden;
-  margin: 1rem 0;
 }
 
 .movie-poster {
@@ -242,7 +241,8 @@ body.no-scroll {
   /* Search Results ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ */
   .search-results {
     max-width: 1100px;
-    margin: auto;
+    row-gap: 0;
+    margin: 0 0.75rem;
   }
   .search-results.active {
     padding: 1rem;

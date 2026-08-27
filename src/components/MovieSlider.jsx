@@ -1,6 +1,7 @@
 import { useMovieList } from "../hooks/useMovieList.jsx";
 import { Link } from "react-router-dom";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
@@ -15,7 +16,21 @@ import "swiper/css";
 
 export function MovieSlider({ title, fetchFunction, idSlider }) {
   const { movies, loading, error } = useMovieList(fetchFunction);
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <p>
+        <section className={`card-slider-${idSlider}`}>
+          <div className="swiper cardSwiper">
+            <h1>
+              <Skeleton width="70%" />
+            </h1>
+            <div className="swiper-wrapper">
+              <Skeleton width="70%" />
+            </div>
+          </div>
+        </section>
+      </p>
+    );
   if (error) return <p>Error!</p>;
   return (
     <section className={`card-slider-${idSlider}`}>

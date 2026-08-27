@@ -2,6 +2,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { getMovies } from "../api/tmdb.jsx";
 import { useMovieList } from "../hooks/useMovieList.jsx";
 
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 export function SearchResults() {
   const [searchParams] = useSearchParams();
   const keyword = searchParams.get("query");
@@ -9,7 +11,36 @@ export function SearchResults() {
     () => getMovies(keyword),
     [keyword],
   );
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="search-results container-film">
+        <div className="movie-card">
+          <div className="movie-poster">
+            <Skeleton height={270} />
+          </div>
+          <div className="movie-info">
+            <div className="movie-top">
+              <div className="movie-title">
+                <h2>
+                  <Skeleton width="70%" />
+                  <span className="title">
+                    <Skeleton width="40%" />
+                  </span>
+                </h2>
+              </div>
+              <span className="movie-date">
+                <Skeleton width={80} />
+              </span>
+            </div>
+            <div className="movie-bottom">
+              <p>
+                <Skeleton count={2} />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   if (error) return <p>Error!</p>;
   return (
     <>

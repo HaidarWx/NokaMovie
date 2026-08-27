@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useMovieDetail } from "../hooks/useMovieDetail.jsx";
 import { useSeason } from "../hooks/useSeason.jsx";
 import { getDetail } from "../api/tmdb.jsx";
-
+import { BeatLoader } from "react-spinners";
 export function MovieDetail({ wishlist, onToggleWishlist }) {
   const { type, id } = useParams();
   const { data, loading, error } = useMovieDetail(
@@ -15,8 +15,23 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
   const { episode, errorSeason, loadingSeason } = useSeason(data, id, type); //if this film is tv, will make list of seasons
   const [showTrailer, setShowTrailer] = useState(false);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
+  if (loading)
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "40px" }}
+      >
+        <BeatLoader color="pink" size={50} />
+      </div>
+    );
+
+  if (error)
+    return (
+      <div
+        style={{ display: "flex", justifyContent: "center", padding: "40px" }}
+      >
+        <h1>Error {error.message}</h1>
+      </div>
+    );
 
   const title = data.title || data.name;
   const date = data.last_air_date || data.release_date;
@@ -49,8 +64,17 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
   const isCurrentMovieIsWishlist = wishlist.some((item) => item.id === id);
 
   if (type === "tv") {
-    if (loadingSeason) return <p>Loading...</p>;
-    if (errorSeason) return <p>Error {errorSeason.message}</p>;
+    if (loadingSeason) return;
+    if (errorSeason)
+      return (
+        <div
+          style={{ display: "flex", justifyContent: "center", padding: "40px" }}
+        >
+          <h1 style={{ color: "red", fontWeight: "bold" }}>
+            Error {errorSeason.message}
+          </h1>
+        </div>
+      );
   }
   return (
     <>
