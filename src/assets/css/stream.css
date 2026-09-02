@@ -28,7 +28,7 @@
   font-size: 14px;
   color: black;
   font-weight: 600;
-  background-color: pink;
+  border: 1px solid white;
   color: white;
   width: fit-content;
   padding: 0.5rem;
@@ -42,7 +42,7 @@
 .episode-cards {
   display: flex;
   align-items: center;
-  background-color: rgba(255, 192, 203, 0.726);
+  border: 1px solid #fff;
   gap: 1rem;
   border-radius: 10px;
 }
@@ -81,23 +81,26 @@
 .video-name {
   font-size: 24px;
   font-weight: bold;
+  color: white;
 }
 .video-etc {
   display: flex;
   font-weight: bold;
   font-size: 18px;
   gap: 1rem;
+  color: white;
 }
 .serial-detail {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  color: white;
 }
 .serial-poster {
   display: flex;
   gap: 1rem;
   text-decoration: none;
-  color: black;
+  color: white;
 }
 .serial-left {
   width: 5rem;
@@ -135,7 +138,7 @@
   padding: 0.5rem;
   font-size: 12px;
   border-radius: 3px;
-  background-color: pink;
+  border: 1px solid white;
 }
 .video-comment {
   margin-top: 1rem;
@@ -162,11 +165,13 @@
 .input-comment input {
   border: none;
   width: auto;
-  background-color: #33333349;
+  background-color: #000;
+  border: 1px solid white;
   padding: 0.5rem 1rem;
   font-size: 16px;
   border-radius: 5px;
   outline: none;
+  color: white;
 }
 .input-wrapper {
   display: flex;
@@ -203,6 +208,7 @@
 }
 .comment-icon .bi {
   font-size: 28px;
+  color: white;
 }
 .icon-love {
   cursor: pointer;
@@ -212,6 +218,7 @@
   width: 100%;
   flex-direction: column;
   gap: 0.75rem;
+  color: white;
 }
 .comment-reply {
   display: flex;

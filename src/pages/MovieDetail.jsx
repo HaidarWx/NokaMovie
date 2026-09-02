@@ -20,7 +20,7 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
       <div
         style={{ display: "flex", justifyContent: "center", padding: "40px" }}
       >
-        <BeatLoader color="pink" size={50} />
+        <BeatLoader color="white" size={50} />
       </div>
     );
 
@@ -149,7 +149,7 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
         </div>
       </div>
       {type === "tv" && (
-        <div className=".info-episode">
+        <div className="info-episode">
           <SeasonList seasons={episode} id={id} type={type}></SeasonList>
         </div>
       )}

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export function SeasonList({ seasons, id }) {
   return (
     <>
-      <div className=".episode-wrapper">
+      <div className="episode-wrapper">
         {seasons.map((n) => {
           const imgEpisode = n.poster_path
             ? `https://media.themoviedb.org/t/p/w300_and_h450_face/${n.poster_path}`

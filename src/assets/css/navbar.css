@@ -14,7 +14,7 @@
 
 nav {
   width: 100%;
-  background-color: pink;
+  background-color: black;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -83,34 +83,37 @@ nav {
 .navbar-search {
   display: flex;
   padding: 5px 14px;
-  background-color: white;
+  background-color: black;
   align-items: center;
   width: 100%;
   border-radius: 999px;
   max-width: 420px;
   gap: 8px;
   transition: box-shadow 0.2s ease;
+  border: 1px solid white;
 }
 
 .input-keyword {
-  color: palevioletred;
+  color: rgb(179, 177, 177);
   border: none;
   outline: none;
   width: 100%;
   background: transparent;
-  padding: 10px 14px;
+  padding: 5px 5px;
+  font-size: 16px;
+  font-family: Roboto, "Arial", sans-serif;
 }
 .navbar-search button {
   border: none;
   background-color: transparent;
+  color: white;
 }
 .search-button {
   font-size: 1rem;
   cursor: pointer;
 }
 .input-keyword::placeholder {
-  color: palevioletred;
-  font-weight: 500;
+  color: rgb(179, 177, 177);
 }
 
 .navbar-content-right i {
@@ -195,6 +198,7 @@ nav {
   .navbar-search-mobile-form button {
     border: none;
     background-color: transparent;
+    color: white;
   }
   .search-button-mobile {
     cursor: pointer;
@@ -213,8 +217,8 @@ nav {
     inset: 0 auto 0 0;
     width: 260px;
     height: 100vh;
-    border-right: 10px solid pink;
-    background: pink;
+    border-right: 10px solid black;
+    background: black;
     display: flex;
     flex-direction: column;
     padding: 1rem 1.5rem;
@@ -269,25 +273,27 @@ nav {
   .navbar-search-mobile {
     display: none;
     padding: 1px 10px;
-    background-color: white;
+    background-color: black;
     align-items: center;
     width: 100%;
     border-radius: 999px;
     max-width: auto;
     gap: 8px;
     transition: box-shadow 0.2s ease;
+    border: 1px solid white;
   }
   .navbar-search-mobile.active {
     display: flex;
   }
 
   .input-keyword-mobile {
-    color: palevioletred;
+    color: rgb(179, 177, 177);
     border: none;
     outline: none;
     width: max-content;
     background: transparent;
     padding: 0.5rem;
+    font-family: Roboto, "Arial", sans-serif;
   }
   .logo-title {
     font-size: 1rem;

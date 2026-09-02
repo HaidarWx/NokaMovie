@@ -1,7 +1,7 @@
 /* Footer Layout */
 
 .footer {
-  background-color: pink;
+  background-color: black;
 }
 .footer-container {
   padding: 3rem 4rem;
@@ -104,7 +104,7 @@
   text-align: center;
 }
 .copy-rights span {
-  color: pink;
+  color: black;
   font-weight: 600;
 }
 
