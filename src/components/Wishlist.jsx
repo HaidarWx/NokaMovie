@@ -73,7 +73,7 @@ export function Wishlist({ wishlist, onToggleWishlist }) {
         })
       ) : (
         <div style={{ display: "flex", margin: "auto", height: "50vh" }}>
-          <h1 style={{ color: "pink", margin: "auto" }}>Tidak ada wishlist</h1>
+          <h1 style={{ color: "white", margin: "auto" }}>Tidak ada wishlist</h1>
         </div>
       )}
     </div>
