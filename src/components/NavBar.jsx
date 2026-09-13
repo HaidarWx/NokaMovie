@@ -36,7 +36,7 @@ export function NavBar() {
                 className={`navbar-icon ${isMobileButtonSearchOpen && isMobileSearchOpen ? "active" : ""}`}
               >
                 <img
-                  src="./assets/image/madoka-icon.gif"
+                  src="/image/madoka-icon.gif"
                   alt="Icon"
                   className="img-icon"
                 />
@@ -69,11 +69,7 @@ export function NavBar() {
                 </a>
               </div>
               <div className="navbar-pfp">
-                <img
-                  src="./assets/image/madoka_pfp.jpg"
-                  alt=""
-                  className="img-pp"
-                />
+                <img src="./image/madoka_pfp.jpg" alt="" className="img-pp" />
               </div>
             </div>
           </div>

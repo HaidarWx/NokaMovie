@@ -6,7 +6,7 @@ export function Footer() {
           <div className="footer-brand">
             <div className="footer-icon">
               <img
-                src="src/assets/image/madoka1.gif"
+                src="./image/madoka1.gif"
                 alt="Icon"
                 className="footer-img-icon"
               />
