@@ -42,6 +42,14 @@ export function SearchResults() {
       </div>
     );
   if (error) return <p>Error!</p>;
+  if (movies.length === 0)
+    return (
+      <div style={{ margin: "auto", display: "flex", height: "50vh" }}>
+        <h1 style={{ color: "white", margin: "auto" }}>
+          Film Tidak Ditemukan!
+        </h1>
+      </div>
+    );
   return (
     <>
       <div className="search-results container-film">

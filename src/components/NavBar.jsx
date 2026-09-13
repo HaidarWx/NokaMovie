@@ -36,7 +36,7 @@ export function NavBar() {
                 className={`navbar-icon ${isMobileButtonSearchOpen && isMobileSearchOpen ? "active" : ""}`}
               >
                 <img
-                  src="src/assets/image/madoka-icon.gif"
+                  src="./assets/image/madoka-icon.gif"
                   alt="Icon"
                   className="img-icon"
                 />
@@ -61,22 +61,16 @@ export function NavBar() {
                 </button>
               </form>
               <div className="navbar-content-right">
-                <a href="/" className="nav-sound">
-                  <i className="bi bi-volume-up-fill"></i>
-                </a>
                 <Link to={`/wishlist/`} className="nav-bookmark">
                   <i className="bi bi-bookmark-fill"></i>
                 </Link>
-                <a href="" className="nav-loves">
-                  <i className="bi bi-heart-fill"></i>
-                </a>
                 <a href="" className="nav-user">
                   <i className="bi bi-person-fill"></i>
                 </a>
               </div>
               <div className="navbar-pfp">
                 <img
-                  src="src/assets/image/madoka_pfp.jpg"
+                  src="./assets/image/madoka_pfp.jpg"
                   alt=""
                   className="img-pp"
                 />

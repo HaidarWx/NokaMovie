@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SeasonList } from "../components/SeasonList.jsx";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useMovieDetail } from "../hooks/useMovieDetail.jsx";
 import { useSeason } from "../hooks/useSeason.jsx";
 import { getDetail } from "../api/tmdb.jsx";
@@ -33,7 +33,7 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
       </div>
     );
 
-  const title = data.title || data.name;
+  const title = data ? data.title || data.name : "No Data";
   const date = data.last_air_date || data.release_date;
   const original =
     data.origin_country == "US"
@@ -76,6 +76,7 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
         </div>
       );
   }
+
   return (
     <>
       <div
@@ -125,9 +126,6 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
                       className={`bi ${isCurrentMovieIsWishlist ? `bi-bookmark-fill` : `bi-bookmark`} `}
                     ></i>
                   </button>
-                  <Link key={date} className="mov-loves action">
-                    <i className="bi bi-heart-fill"></i>
-                  </Link>
                   <div className="trailer" onClick={() => setShowTrailer(true)}>
                     <span className="mov-play">
                       <i className="bi bi-play-fill"></i>
@@ -141,7 +139,7 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
                   <h3 dir="auto">Overview</h3>
                 </div>
                 <div className="overview">
-                  <p>{data.overview}</p>
+                  <p>{data.overview ? data.overview : "No data!"}</p>
                 </div>
               </div>
             </div>

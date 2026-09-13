@@ -85,12 +85,14 @@ a {
   border-radius: 999px;
   justify-content: center;
   align-items: center;
+  border: none;
 }
 
 .mov-action .action .bi {
   font-size: 16px;
   color: #ffff;
 }
+
 .trailer {
 }
 .mov-play {
@@ -242,7 +244,7 @@ button {
 
 .overview p {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: calc(1em * 2);

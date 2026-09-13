@@ -18,18 +18,16 @@ export function MovieSlider({ title, fetchFunction, idSlider }) {
   const { movies, loading, error } = useMovieList(fetchFunction);
   if (loading)
     return (
-      <p>
-        <section className={`card-slider-${idSlider}`}>
-          <div className="swiper cardSwiper">
-            <h1>
-              <Skeleton width="70%" />
-            </h1>
-            <div className="swiper-wrapper">
-              <Skeleton width="70%" />
-            </div>
+      <section className={`card-slider-${idSlider}`}>
+        <div className="swiper cardSwiper">
+          <h1>
+            <Skeleton width="70%" />
+          </h1>
+          <div className="swiper-wrapper">
+            <Skeleton width="70%" />
           </div>
-        </section>
-      </p>
+        </div>
+      </section>
     );
   if (error) return <p>Error!</p>;
   return (
