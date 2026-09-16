@@ -8,6 +8,7 @@ export function NavBar() {
   const [isMobileButtonSearchOpen, setIsMobileButtonSearchOpen] =
     useState(false);
 
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
   const navigate = useNavigate();
 
   function handleSearch(event) {
@@ -40,8 +41,10 @@ export function NavBar() {
                   alt="Icon"
                   className="img-icon"
                 />
+
                 <span className="logo-title">NokaMovie</span>
               </Link>
+
               <div className="navbar-content-left"></div>
             </div>
             <div className="navbar-right">
@@ -68,9 +71,130 @@ export function NavBar() {
                   <i className="bi bi-person-fill"></i>
                 </a>
               </div>
-              <div className="navbar-pfp">
+              <div
+                className="navbar-pfp"
+                onClick={() => setIsAccountOpen(true)}
+              >
                 <img src="./image/madoka_pfp.jpg" alt="" className="img-pp" />
               </div>
+
+              {/*  */}
+              <div
+                className={`container-profile ${isAccountOpen && "active"}`}
+                style={{
+                  color: "white",
+                  width: "fit-content",
+
+                  textDecoration: "none",
+                  position: "absolute",
+                  right: "6rem",
+                  top: "4rem",
+                }}
+              >
+                <div
+                  className="box-profile"
+                  style={{
+                    padding: "10px",
+                    backgroundColor: "#333",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <div className="account-header">
+                    <div
+                      className="account-header-box"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: "20px",
+                        gap: "1rem",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      <div className="icon-profile-img">
+                        <img
+                          src="public/image/madoka_pfp.jpg"
+                          style={{ width: "50px", borderRadius: "999px" }}
+                          alt="Profile Picture's"
+                        />
+                      </div>
+                      <div className="icon-profile-info">
+                        <div
+                          className="icon-profile-name"
+                          style={{ fontSize: "18px", fontWeight: "600" }}
+                        >
+                          Homudoka
+                        </div>
+                        <div className="icon-profile-mail">
+                          thisaemail@gmail.com
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <div
+                    className="account-menu"
+                    style={{
+                      display: "flex",
+                      fontSize: "20px",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      gap: "1rem",
+                      marginTop: "1rem",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    <Link className="menu-profile-button">
+                      <section
+                        style={{
+                          display: "flex",
+                          gap: "2rem",
+                          alignItems: "center",
+                        }}
+                        className="item-button-profile"
+                      >
+                        <i
+                          className="bi bi-google"
+                          style={{ fontSize: "18px" }}
+                        ></i>
+                        Google Account
+                      </section>
+                    </Link>
+                    <Link>
+                      <section
+                        style={{
+                          color: "white",
+                          display: "flex",
+                          gap: "2rem",
+                          alignItems: "center",
+                        }}
+                      >
+                        <i
+                          className="bi bi-person-fill-gear"
+                          style={{ fontSize: "18px" }}
+                        ></i>
+                        Change Account
+                      </section>
+                    </Link>
+                    <Link>
+                      <section
+                        style={{
+                          color: "white",
+                          display: "flex",
+                          gap: "2rem",
+                          alignItems: "center",
+                        }}
+                      >
+                        <i
+                          className="bi bi-box-arrow-right"
+                          style={{ fontSize: "18px" }}
+                        ></i>
+                        Sign Out
+                      </section>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              {/*  */}
             </div>
           </div>
         </div>
@@ -93,6 +217,7 @@ export function NavBar() {
               />
               <span className="logo-title">NokaMovie</span>
             </div>
+
             <div className="mobile-box-left"></div>
             <Link
               to={`/`}
@@ -166,6 +291,11 @@ export function NavBar() {
           setIsMobileSearchOpen(false);
           setIsMobileButtonSearchOpen(false);
         }}
+      ></div>
+      <div
+        className={`overlay-global ${isAccountOpen ? "active" : ""}`}
+        id="overlayGlobal"
+        onClick={() => setIsAccountOpen(false)}
       ></div>
     </>
   );

@@ -1,5 +1,29 @@
 /* NAVBAR UTILITIES */
+.overlay-global {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 99;
+}
+.overlay-global.active {
+  opacity: 1;
+  pointer-events: auto;
+}
 
+.menu-profile-button:hover {
+  background-color: white;
+}
+.bi-google {
+  color: #ffff;
+}
+
+.menu-profile-button:hover .item-button-profile .bi,
+.menu-profile-button:hover .item-button-profile {
+  color: black;
+}
 /* For Nav-Bar Utilities ⭐*/
 
 .navbar-mobile,
@@ -128,6 +152,13 @@ nav {
   cursor: pointer;
 }
 
+.container-profile {
+  display: none;
+}
+
+.container-profile.active {
+  display: flex;
+}
 @media (max-width: 640px) {
   nav {
     z-index: 100;
