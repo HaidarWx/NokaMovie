@@ -13,17 +13,6 @@
   pointer-events: auto;
 }
 
-.menu-profile-button:hover {
-  background-color: white;
-}
-.bi-google {
-  color: #ffff;
-}
-
-.menu-profile-button:hover .item-button-profile .bi,
-.menu-profile-button:hover .item-button-profile {
-  color: black;
-}
 /* For Nav-Bar Utilities ⭐*/
 
 .navbar-mobile,
@@ -154,10 +143,75 @@ nav {
 
 .container-profile {
   display: none;
+  color: white;
+  width: fit-content;
+  text-decoration: none;
+  position: absolute;
+  right: 6rem;
+  top: 4rem;
+}
+.box-profile {
+  display: flex;
+  flex-direction: column;
+
+  background-color: #333;
+  border-radius: 10px;
 }
 
+.account-header-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-size: 1.2rem;
+  gap: 1rem;
+}
+.icon-profile-name {
+  font-size: 18px;
+  font-weight: 600;
+}
 .container-profile.active {
   display: flex;
+}
+.icon-profile-img img {
+  width: 50px;
+  border-radius: 999px;
+}
+.icon-profile-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.account-menu {
+  display: flex;
+  font-size: 20px;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.item-button-profile {
+  display: flex;
+  font-family: "Poppins", sans-serif;
+  padding: 0.5rem;
+  gap: 2rem;
+  color: white;
+  font-size: 1rem;
+}
+.item-button-profile .bi {
+  color: white;
+  font-size: 1rem;
+}
+
+.menu-profile-button:hover .item-button-profile,
+.menu-profile-button:hover .item-button-profile .bi {
+  color: black;
+}
+.menu-profile-button:hover {
+  background-color: white;
+  transition: 0.2s;
 }
 @media (max-width: 640px) {
   nav {

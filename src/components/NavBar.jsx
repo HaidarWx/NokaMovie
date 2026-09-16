@@ -79,51 +79,18 @@ export function NavBar() {
               </div>
 
               {/*  */}
-              <div
-                className={`container-profile ${isAccountOpen && "active"}`}
-                style={{
-                  color: "white",
-                  width: "fit-content",
-
-                  textDecoration: "none",
-                  position: "absolute",
-                  right: "6rem",
-                  top: "4rem",
-                }}
-              >
-                <div
-                  className="box-profile"
-                  style={{
-                    padding: "10px",
-                    backgroundColor: "#333",
-                    borderRadius: "10px",
-                  }}
-                >
+              <div className={`container-profile ${isAccountOpen && "active"}`}>
+                <div className="box-profile">
                   <div className="account-header">
-                    <div
-                      className="account-header-box"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: "20px",
-                        gap: "1rem",
-                        marginBottom: "1rem",
-                      }}
-                    >
+                    <div className="account-header-box">
                       <div className="icon-profile-img">
                         <img
                           src="public/image/madoka_pfp.jpg"
-                          style={{ width: "50px", borderRadius: "999px" }}
                           alt="Profile Picture's"
                         />
                       </div>
                       <div className="icon-profile-info">
-                        <div
-                          className="icon-profile-name"
-                          style={{ fontSize: "18px", fontWeight: "600" }}
-                        >
-                          Homudoka
-                        </div>
+                        <div className="icon-profile-name">Homudoka</div>
                         <div className="icon-profile-mail">
                           thisaemail@gmail.com
                         </div>
@@ -131,63 +98,22 @@ export function NavBar() {
                     </div>
                   </div>
                   <hr />
-                  <div
-                    className="account-menu"
-                    style={{
-                      display: "flex",
-                      fontSize: "20px",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                      gap: "1rem",
-                      marginTop: "1rem",
-                      marginBottom: "1rem",
-                    }}
-                  >
+                  <div className="account-menu">
                     <Link className="menu-profile-button">
-                      <section
-                        style={{
-                          display: "flex",
-                          gap: "2rem",
-                          alignItems: "center",
-                        }}
-                        className="item-button-profile"
-                      >
-                        <i
-                          className="bi bi-google"
-                          style={{ fontSize: "18px" }}
-                        ></i>
+                      <section className="item-button-profile">
+                        <i className="bi bi-google"></i>
                         Google Account
                       </section>
                     </Link>
-                    <Link>
-                      <section
-                        style={{
-                          color: "white",
-                          display: "flex",
-                          gap: "2rem",
-                          alignItems: "center",
-                        }}
-                      >
-                        <i
-                          className="bi bi-person-fill-gear"
-                          style={{ fontSize: "18px" }}
-                        ></i>
+                    <Link className="menu-profile-button">
+                      <section className="item-button-profile">
+                        <i className="bi bi-person-fill-gear"></i>
                         Change Account
                       </section>
                     </Link>
-                    <Link>
-                      <section
-                        style={{
-                          color: "white",
-                          display: "flex",
-                          gap: "2rem",
-                          alignItems: "center",
-                        }}
-                      >
-                        <i
-                          className="bi bi-box-arrow-right"
-                          style={{ fontSize: "18px" }}
-                        ></i>
+                    <Link className="menu-profile-button">
+                      <section className="item-button-profile">
+                        <i className="bi bi-box-arrow-right"></i>
                         Sign Out
                       </section>
                     </Link>
