@@ -87,7 +87,7 @@ export function NavBar() {
           >
             <div className="navbar-icon">
               <img
-                src="src/assets/image/madoka-icon.gif"
+                src="./image/madoka-icon.gif"
                 alt="Icon"
                 className="img-icon"
               />
@@ -170,3 +170,4 @@ export function NavBar() {
     </>
   );
 }
+63;

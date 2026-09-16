@@ -145,37 +145,37 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
             </div>
           </div>
         </div>
+        {showTrailer && (
+          <div
+            className="overlay-trailer"
+            data-src={trailerEmbedUrl}
+            onClick={() => setShowTrailer(false)}
+          >
+            {trailerEmbedUrl ? (
+              <div
+                className="trailer-content"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <iframe
+                  width="560"
+                  height="315"
+                  src={`${trailerEmbedUrl}?autoplay=0`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="encrypted-media;autoplay"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            ) : (
+              <div className="no-trailer">Tidak Punya Trailer!</div>
+            )}
+          </div>
+        )}
       </div>
       {type === "tv" && (
         <div className="info-episode">
           <SeasonList seasons={episode} id={id} type={type}></SeasonList>
-        </div>
-      )}
-      {showTrailer && (
-        <div
-          className="overlay-trailer"
-          data-src={trailerEmbedUrl}
-          onClick={() => setShowTrailer(false)}
-        >
-          {trailerEmbedUrl ? (
-            <div
-              className="trailer-content"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <iframe
-                width="560"
-                height="315"
-                src={`${trailerEmbedUrl}?autoplay=0`}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="encrypted-media;autoplay"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              ></iframe>
-            </div>
-          ) : (
-            <div className="no-trailer">Tidak Punya Trailer!</div>
-          )}
         </div>
       )}
     </>

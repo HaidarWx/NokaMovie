@@ -463,4 +463,13 @@ summary {
   .season-title {
     font-size: 1.25rem;
   }
+  .overlay-trailer {
+    width: 100%;
+  }
+  .trailer-content {
+    width: 100%;
+  }
+  .trailer-content iframe {
+    width: 100%;
+  }
 }
