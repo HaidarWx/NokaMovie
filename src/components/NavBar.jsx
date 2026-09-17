@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-export function NavBar() {
+export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
   const [keyword, setKeyword] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileButtonSearchOpen, setIsMobileButtonSearchOpen] =
     useState(false);
 
-  const [isAccountOpen, setIsAccountOpen] = useState(false);
   const navigate = useNavigate();
 
   function handleSearch(event) {
@@ -73,13 +72,15 @@ export function NavBar() {
               </div>
               <div
                 className="navbar-pfp"
-                onClick={() => setIsAccountOpen(true)}
+                onClick={() => setIsModalProfileOpen(true)}
               >
                 <img src="./image/madoka_pfp.jpg" alt="" className="img-pp" />
               </div>
 
               {/*  */}
-              <div className={`container-profile ${isAccountOpen && "active"}`}>
+              <div
+                className={`container-profile ${isModalProfileOpen && "active"}`}
+              >
                 <div className="box-profile">
                   <div className="account-header">
                     <div className="account-header-box">
@@ -217,11 +218,6 @@ export function NavBar() {
           setIsMobileSearchOpen(false);
           setIsMobileButtonSearchOpen(false);
         }}
-      ></div>
-      <div
-        className={`overlay-global ${isAccountOpen ? "active" : ""}`}
-        id="overlayGlobal"
-        onClick={() => setIsAccountOpen(false)}
       ></div>
     </>
   );

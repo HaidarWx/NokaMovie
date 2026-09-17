@@ -17,6 +17,8 @@ function App() {
 
     return saveWishlist ? JSON.parse(saveWishlist) : [];
   });
+
+  const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
@@ -47,43 +49,58 @@ function App() {
 
   return (
     <BrowserRouter>
-      <NavBar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <ModalOverlay />
-              <HomeContent />
-            </>
+      <div
+        className="container"
+        onClick={(e) => {
+          if (isModalProfileOpen) {
+            if (e.target.closest(`.container-profile`)) {
+              return;
+            }
+            setIsModalProfileOpen(false);
           }
+        }}
+      >
+        <NavBar
+          setIsModalProfileOpen={setIsModalProfileOpen}
+          isModalProfileOpen={isModalProfileOpen}
         />
-        <Route path="/search" element={<SearchResults />} />
-        <Route
-          path="/detail/:type/:id"
-          element={
-            <MovieDetail
-              wishlist={wishlist}
-              onToggleWishlist={toggleWishlist}
-            />
-          }
-        ></Route>
-        <Route
-          path="/season/:seasonNumber/:id"
-          element={<SeasonDetail />}
-        ></Route>
-        <Route
-          path="/stream/:id/:seasonNumber/:episodeNumber"
-          element={<StreamDetail />}
-        ></Route>
-        <Route
-          element={
-            <Wishlist wishlist={wishlist} onToggleWishlist={toggleWishlist} />
-          }
-          path={"/wishlist/"}
-        ></Route>
-      </Routes>
-      <Footer />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <ModalOverlay />
+                <HomeContent />
+              </>
+            }
+          />
+          <Route path="/search" element={<SearchResults />} />
+          <Route
+            path="/detail/:type/:id"
+            element={
+              <MovieDetail
+                wishlist={wishlist}
+                onToggleWishlist={toggleWishlist}
+              />
+            }
+          ></Route>
+          <Route
+            path="/season/:seasonNumber/:id"
+            element={<SeasonDetail />}
+          ></Route>
+          <Route
+            path="/stream/:id/:seasonNumber/:episodeNumber"
+            element={<StreamDetail />}
+          ></Route>
+          <Route
+            element={
+              <Wishlist wishlist={wishlist} onToggleWishlist={toggleWishlist} />
+            }
+            path={"/wishlist/"}
+          ></Route>
+        </Routes>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }
