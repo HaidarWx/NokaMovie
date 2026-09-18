@@ -66,15 +66,12 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
                 <Link to={`/wishlist/`} className="nav-bookmark">
                   <i className="bi bi-bookmark-fill"></i>
                 </Link>
-                <a href="" className="nav-user">
-                  <i className="bi bi-person-fill"></i>
-                </a>
               </div>
               <div
                 className="navbar-pfp"
                 onClick={() => setIsModalProfileOpen(true)}
               >
-                <img src="./image/madoka_pfp.jpg" alt="" className="img-pp" />
+                <img src="/image/madoka_pfp.jpg" alt="" className="img-pp" />
               </div>
 
               {/*  */}
@@ -86,7 +83,7 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
                     <div className="account-header-box">
                       <div className="icon-profile-img">
                         <img
-                          src="public/image/madoka_pfp.jpg"
+                          src="/image/madoka_pfp.jpg"
                           alt="Profile Picture's"
                         />
                       </div>
@@ -102,8 +99,8 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
                   <div className="account-menu">
                     <Link className="menu-profile-button">
                       <section className="item-button-profile">
-                        <i className="bi bi-google"></i>
-                        Google Account
+                        <i className="bi bi-person-fill"></i>
+                        Account
                       </section>
                     </Link>
                     <Link className="menu-profile-button">
@@ -138,7 +135,7 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
           >
             <div className="navbar-icon">
               <img
-                src="./image/madoka-icon.gif"
+                src="/image/madoka-icon.gif"
                 alt="Icon"
                 className="img-icon"
               />
@@ -203,11 +200,7 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
               setIsMobileButtonSearchOpen(true);
             }}
           ></i>
-          <img
-            src="src/assets/image/madoka_pfp.jpg"
-            alt=""
-            className={`img-pp-mobile`}
-          />
+          <img src="/image/madoka_pfp.jpg" alt="" className={`img-pp-mobile`} />
         </div>
       </nav>
 
@@ -222,4 +215,3 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
     </>
   );
 }
-63;
