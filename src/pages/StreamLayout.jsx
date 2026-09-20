@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { dateFunction } from "../hooks/dateFunction.jsx";
 export function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
   const video = `https://image.tmdb.org/t/p/w500/${dataEpisode.still_path}`;
   const title = dataEpisode.name;
-  const date = dataEpisode.air_date;
+
   const age =
     dataMovie.content_ratings.results.find((r) => r.iso_3166_1 === "US")
       ?.rating || "N/A";
@@ -51,7 +52,7 @@ export function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
       </Link>
     );
   });
-
+  const date = dateFunction(dataSeason.air_date);
   return (
     <>
       <section className="watch-player">
@@ -85,7 +86,7 @@ export function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
                 </div>
                 <div className="serial-etc">
                   <div className="serial-age">{age}</div>
-                  <div className="serial-year">{dataSeason.air_date}</div>
+                  <div className="serial-year">{date}</div>
                 </div>
               </div>
             </Link>

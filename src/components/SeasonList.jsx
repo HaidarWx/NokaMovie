@@ -9,6 +9,21 @@ export function SeasonList({ seasons, id }) {
             ? `https://media.themoviedb.org/t/p/w300_and_h450_face/${n.poster_path}`
             : `https://static.vecteezy.com/system/resources/thumbnails/004/639/366/small/error-404-not-found-text-design-vector.jpg`;
 
+          const dateRaw = n.air_date || n.air_date;
+          const dateSeason = dateFunction();
+          function dateFunction() {
+            if (!dateRaw) return "Data not found!";
+
+            const dateObj = new Date(dateRaw);
+
+            const date = new Intl.DateTimeFormat("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }).format(dateObj);
+            console.log(date);
+            return date;
+          }
           return (
             <Link
               className="season"
@@ -24,9 +39,7 @@ export function SeasonList({ seasons, id }) {
                   <div className="detail-top">
                     <div className="season-title">{n.name}</div>
                     <div className="season-hot">
-                      <div className="season-date">
-                        {n.air_date ? n.air_date : "No Date "}
-                      </div>
+                      <div className="season-date">{dateSeason}</div>
                       <div className="season-date">
                         {n.episodes.length} Episode's
                       </div>

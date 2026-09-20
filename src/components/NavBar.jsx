@@ -31,17 +31,18 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
                 onClick={() => setIsMobileMenuOpen(true)}
               ></i>
 
-              <Link
-                to={`/`}
-                className={`navbar-icon ${isMobileButtonSearchOpen && isMobileSearchOpen ? "active" : ""}`}
-              >
+              <Link to={`/`} className={`navbar-icon }`}>
                 <img
                   src="/image/madoka-icon.gif"
                   alt="Icon"
                   className="img-icon"
                 />
 
-                <span className="logo-title">NokaMovie</span>
+                <span
+                  className={`logo-title ${isMobileButtonSearchOpen && isMobileSearchOpen ? "active" : ""}`}
+                >
+                  NokaMovie
+                </span>
               </Link>
 
               <div className="navbar-content-left"></div>

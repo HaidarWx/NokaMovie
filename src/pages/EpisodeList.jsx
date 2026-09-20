@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { dateFunction } from "../hooks/dateFunction.jsx";
 export function EpisodeList({ dataSeason }) {
   const nfound = `https://static.vecteezy.com/system/resources/thumbnails/004/639/366/small/error-404-not-found-text-design-vector.jpg`;
   const dataEpisode = dataSeason.episodes;
@@ -15,6 +16,7 @@ export function EpisodeList({ dataSeason }) {
         const imgEpisode = episode.still_path
           ? `https://media.themoviedb.org/t/p/w227_and_h127_face/${episode.still_path}`
           : nfound;
+        const date = dateFunction(episode.air_date);
         return (
           <Link
             to={`/stream/${episode.show_id}/${episode.season_number}/${episode.episode_number}`}
@@ -34,7 +36,7 @@ export function EpisodeList({ dataSeason }) {
                     <div className="episode-title">{episode.name}</div>
                     <div className="more-info">
                       <div className="rating">★ {rating}%</div>
-                      <div className="date">{episode.air_date}</div>
+                      <div className="date">{date}</div>
                       <div className="runtime">• {runtime}</div>
                     </div>
                   </div>

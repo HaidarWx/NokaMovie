@@ -1,7 +1,7 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { getMovies } from "../api/tmdb.jsx";
 import { useMovieList } from "../hooks/useMovieList.jsx";
-
+import { dateFunction } from "../hooks/dateFunction.jsx";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 export function SearchResults() {
@@ -57,6 +57,8 @@ export function SearchResults() {
           const poster = mov.poster_path
             ? `https://image.tmdb.org/t/p/w500${mov.poster_path}`
             : `https://demofree.sirv.com/nope-not-here.jpg`;
+          const dateRaw = mov.release_date || mov.first_air_date;
+          const date = dateFunction(dateRaw);
 
           return (
             <Link
@@ -81,9 +83,7 @@ export function SearchResults() {
                         </span>
                       </h2>
                     </div>
-                    <span className="movie-date">
-                      {mov.release_date || mov.first_air_date}
-                    </span>
+                    <span className="movie-date">{date}</span>
                   </div>
                   <div className="movie-bottom">
                     <p>{mov.overview}</p>
