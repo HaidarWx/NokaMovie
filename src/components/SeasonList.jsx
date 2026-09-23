@@ -40,6 +40,7 @@ export function SeasonList({ seasons, id }) {
                     <div className="season-title">{n.name}</div>
                     <div className="season-hot">
                       <div className="season-date">{dateSeason}</div>
+                      <span>|</span>
                       <div className="season-date">
                         {n.episodes.length} Episode's
                       </div>

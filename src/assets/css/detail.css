@@ -292,6 +292,7 @@ summary {
 .season {
   display: flex;
 }
+
 .season-card {
   display: flex;
   width: 100%;
@@ -471,5 +472,15 @@ summary {
   }
   .trailer-content iframe {
     width: 100%;
+  }
+  .season-date {
+    font-size: 14px;
+  }
+  .season-card {
+    padding: 0.5rem;
+  }
+  .season {
+    margin: 1rem 1rem;
+    font-weight: 400;
   }
 }
