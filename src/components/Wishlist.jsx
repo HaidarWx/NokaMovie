@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import { dateFunction } from "../hooks/dateFunction";
 // Import Swiper styles
 import "swiper/css";
 
@@ -44,7 +44,7 @@ export function Wishlist({ wishlist, onToggleWishlist }) {
                         <span className="title">({original})</span>
                       </h2>
                     </div>
-                    <span className="wish-date">{date}</span>
+                    <span className="wish-date">{dateFunction(date)}</span>
                   </div>
                   <div className="wish-bottom">
                     <button
