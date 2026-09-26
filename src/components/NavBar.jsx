@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
+export function NavBar({
+  isModalProfileOpen,
+  setIsModalProfileOpen,
+  isSearchMobileOpen,
+  setIsSearchMobileOpen,
+}) {
   const [keyword, setKeyword] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const [isMobileButtonSearchOpen, setIsMobileButtonSearchOpen] =
-    useState(false);
 
   const navigate = useNavigate();
 
@@ -19,9 +21,7 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
 
   return (
     <>
-      <nav
-        className={`navbar ${isMobileSearchOpen && isMobileButtonSearchOpen ? "active" : ""}`}
-      >
+      <nav className={`navbar ${isSearchMobileOpen ? "active" : ""}`}>
         <div className="navbar-container">
           <div className="navbar-content">
             <div className="navbar-left">
@@ -39,7 +39,7 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
                 />
 
                 <span
-                  className={`logo-title ${isMobileButtonSearchOpen && isMobileSearchOpen ? "active" : ""}`}
+                  className={`logo-title ${isSearchMobileOpen ? "active" : ""}`}
                 >
                   NokaMovie
                 </span>
@@ -174,7 +174,7 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
 
         <div className="navbar-mobile-right">
           <div
-            className={`navbar-search-mobile ${isMobileSearchOpen ? "active" : ""}`}
+            className={`navbar-search-mobile ${isSearchMobileOpen ? "active" : ""}`}
           >
             <form
               className={`navbar-search-mobile-form`}
@@ -197,10 +197,9 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
             </form>
           </div>
           <i
-            className={`bi bi-search search-button-nav-mobile ${isMobileButtonSearchOpen ? "inactive" : ""} `}
+            className={`bi bi-search search-button-nav-mobile ${isSearchMobileOpen ? "inactive" : ""} `}
             onClick={() => {
-              setIsMobileSearchOpen(true);
-              setIsMobileButtonSearchOpen(true);
+              setIsSearchMobileOpen(true);
             }}
           ></i>
           <div onClick={() => setIsModalProfileOpen(true)}>
@@ -255,14 +254,7 @@ export function NavBar({ isModalProfileOpen, setIsModalProfileOpen }) {
         </div>
       </nav>
 
-      <div
-        className={`overlay-global ${isMobileButtonSearchOpen ? "active" : ""}`}
-        id="overlayGlobal"
-        onClick={() => {
-          setIsMobileSearchOpen(false);
-          setIsMobileButtonSearchOpen(false);
-        }}
-      ></div>
+      <div className={`overlay-global`} id="overlayGlobal"></div>
     </>
   );
 }

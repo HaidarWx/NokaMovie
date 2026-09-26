@@ -19,6 +19,7 @@ function App() {
   });
 
   const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
+  const [isSearchMobileOpen, setIsSearchMobileOpen] = useState(false);
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
@@ -58,11 +59,19 @@ function App() {
             }
             setIsModalProfileOpen(false);
           }
+          if (isSearchMobileOpen) {
+            if (e.target.closest(`.navbar-search-mobile`)) {
+              return;
+            }
+            setIsSearchMobileOpen(false);
+          }
         }}
       >
         <NavBar
           setIsModalProfileOpen={setIsModalProfileOpen}
           isModalProfileOpen={isModalProfileOpen}
+          isSearchMobileOpen={isSearchMobileOpen}
+          setIsSearchMobileOpen={setIsSearchMobileOpen}
         />
         <Routes>
           <Route
