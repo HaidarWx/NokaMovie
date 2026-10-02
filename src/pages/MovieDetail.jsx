@@ -34,7 +34,7 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
     );
 
   const title = data ? data.title || data.name : "No Data";
-  const date = data.last_air_date || data.release_date;
+  const date = data.last_air_date || data.release_date || data.first_air_date;
   const original =
     data.origin_country == "US"
       ? `.`
@@ -98,7 +98,7 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
                       {title}
                     </a>
                   </h2>
-                  <span>({date.slice(0, 4)})</span>
+                  <span>({date ? date.slice(0, 4) : date})</span>
                 </div>
                 <div className="original-name">{original}</div>
                 <div className="mov-fact">

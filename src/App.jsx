@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Wishlist } from "./components/Wishlist.jsx";
-import { NavBar } from "./components/NavBar.jsx";
+import { NavBar } from "./components/Navbar Components/NavBar.jsx";
 import { Footer } from "./components/Footer.jsx";
 import { SearchResults } from "./pages/SearchResults.jsx";
 import { StreamDetail } from "./components/StreamDetail.jsx";
@@ -10,6 +10,7 @@ import { SeasonDetail } from "./components/SeasonDetail.jsx";
 import { ModalOverlay } from "./components/ModalOverlay.jsx";
 import { HomeContent } from "./pages/HomeContent.jsx";
 import "swiper/css";
+import { LoginForm } from "./components/Navbar Components/LoginForm.jsx";
 
 function App() {
   const [wishlist, setWishlist] = useState(() => {
@@ -19,6 +20,7 @@ function App() {
   });
 
   const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
+  console.log(isModalProfileOpen);
   const [isSearchMobileOpen, setIsSearchMobileOpen] = useState(false);
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
@@ -107,6 +109,7 @@ function App() {
             }
             path={"/wishlist/"}
           ></Route>
+          <Route path="/login" element={<LoginForm />}></Route>
         </Routes>
         <Footer />
       </div>

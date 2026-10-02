@@ -1,6 +1,40 @@
 export const API_KEY = "1c353dc1b6d94ce88642f8d6b57fa0b7";
 export const BASE_URL = "https://api.themoviedb.org/3";
 
+/* Request data untuk hasil informasi akun tmdb */
+
+const headers = {
+  accept: "application/json",
+  "content-type": "application/json",
+  Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYzM1M2RjMWI2ZDk0Y2U4ODY0MmY4ZDZiNTdmYTBiNyIsIm5iZiI6MTc3MjAzNTI1OC45NzgsInN1YiI6IjY5OWYxY2JhNDdiY2QzY2Y2M2U4NWY3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qOfQ5MU0G09aObPB_H42tcE8_Gg-uDcw3D2Vyw7X_l0`,
+};
+
+async function request(path, options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, { headers, ...options });
+  console.log(headers.Authorization);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.status_message || "Request gagal");
+  return data;
+}
+
+export async function login(username, password) {
+  const { request_token } = await request(`/authentication/token/new`);
+
+  await request("/authentication/token/validate_with_login", {
+    method: "POST",
+    body: JSON.stringify({ username, password, request_token }),
+  });
+
+  const session_id = await request("/authentication/session/new", {
+    method: "POST",
+    body: JSON.stringify({ request_token }),
+  });
+  return session_id;
+}
+
+export function getAccount(sessionId) {
+  return request(`/account?session_id=${sessionId}`);
+}
 /* Request data untuk hasil film dari search */
 export async function getMovies(inputKeyword) {
   const [movieRes, tvRes] = await Promise.all([
