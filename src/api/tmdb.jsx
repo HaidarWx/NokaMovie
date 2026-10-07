@@ -11,8 +11,8 @@ const headers = {
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE_URL}${path}`, { headers, ...options });
-  console.log(headers.Authorization);
   const data = await res.json();
+  console.log(data);
   if (!res.ok) throw new Error(data.status_message || "Request gagal");
   return data;
 }

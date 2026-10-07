@@ -11,13 +11,19 @@ import { ModalOverlay } from "./components/ModalOverlay.jsx";
 import { HomeContent } from "./pages/HomeContent.jsx";
 import "swiper/css";
 import { LoginForm } from "./components/Navbar Components/LoginForm.jsx";
-
+import { getAccount } from "./api/tmdb.jsx";
 function App() {
   const [wishlist, setWishlist] = useState(() => {
     const saveWishlist = localStorage.getItem("wishlist");
 
     return saveWishlist ? JSON.parse(saveWishlist) : [];
   });
+  const [sessionId, setSessionId] = useState(() => {
+    const saveSessionId = localStorage.getItem("session_id");
+
+    return saveSessionId ? JSON.parse(saveSessionId) : [];
+  });
+  const [account, setAccount] = useState(null);
 
   const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
   console.log(isModalProfileOpen);
@@ -25,6 +31,28 @@ function App() {
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
+  useEffect(() => {
+    localStorage.setItem("session_id", JSON.stringify(sessionId));
+  }, [sessionId]);
+  useEffect(() => {
+    if (!sessionId?.session_id) {
+      setAccount(null);
+      return;
+    }
+    let ignore = false;
+
+    getAccount(sessionId.session_id)
+      .then((data) => {
+        if (!ignore) setAccount(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [sessionId]);
   function toggleWishlist(movie) {
     const { id, type, title, poster, date, original } = movie;
 
@@ -49,7 +77,7 @@ function App() {
       return [dataWishlist, ...prevWishlist];
     });
   }
-
+  console.log(account);
   return (
     <BrowserRouter>
       <div
@@ -74,6 +102,7 @@ function App() {
           isModalProfileOpen={isModalProfileOpen}
           isSearchMobileOpen={isSearchMobileOpen}
           setIsSearchMobileOpen={setIsSearchMobileOpen}
+          account={account}
         />
         <Routes>
           <Route
@@ -109,7 +138,12 @@ function App() {
             }
             path={"/wishlist/"}
           ></Route>
-          <Route path="/login" element={<LoginForm />}></Route>
+          <Route
+            path="/login"
+            element={
+              <LoginForm sessionId={sessionId} setSessionId={setSessionId} />
+            }
+          ></Route>
         </Routes>
         <Footer />
       </div>

@@ -6,6 +6,7 @@ export function NavBar({
   setIsModalProfileOpen,
   isSearchMobileOpen,
   setIsSearchMobileOpen,
+  account,
 }) {
   const [keyword, setKeyword] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -18,7 +19,7 @@ export function NavBar({
     if (!inputUser) return;
     navigate(`/search?query=${encodeURIComponent(inputUser)}`);
   }
-
+  console.log(account);
   return (
     <>
       <nav className={`navbar ${isSearchMobileOpen ? "active" : ""}`}>
