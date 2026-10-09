@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSessionId } from "../../hooks/useSessionId.jsx";
-import { getAccount } from "../../api/tmdb.jsx";
+
 import { SyncLoader } from "react-spinners";
 
 export function LoginForm({ sessionId, setSessionId }) {
@@ -13,15 +13,16 @@ export function LoginForm({ sessionId, setSessionId }) {
   const [error, setError] = useState("");
 
   async function handleLogin(e) {
+    e.preventDefault();
     setLoading(true);
     setError("");
     try {
       const session = await getSessionId(username, password);
       setSessionId(session);
-      console.log(sessionId);
+      console.log(session);
       navigate("/", { replace: true });
     } catch (error) {
-      setError(error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -49,12 +50,13 @@ export function LoginForm({ sessionId, setSessionId }) {
             <h1>Login</h1>
           </div>
 
-          <form action="" className="login-card-login">
+          <form action="" className="login-card-login" onSubmit={handleLogin}>
             <span className="login-field-username">
               <input
                 type="text"
                 placeholder="Username"
                 onChange={(event) => setUsername(event.target.value)}
+                value={username}
               />
             </span>
             <span className="login-field-password">
@@ -63,6 +65,7 @@ export function LoginForm({ sessionId, setSessionId }) {
                   type={visible ? "text" : "password"}
                   placeholder="Password"
                   onChange={(event) => setPassword(event.target.value)}
+                  value={password}
                 />
               </span>
 
@@ -82,22 +85,19 @@ export function LoginForm({ sessionId, setSessionId }) {
                 ></i>
               )}
             </span>
+
+            <div className="login-card-footer">
+              {error && (
+                <div className="login-failed">
+                  <span style={{ fontSize: "12px" }}>{error}</span>
+                </div>
+              )}
+
+              <button type="submit" className="login-button-submit">
+                Login
+              </button>
+            </div>
           </form>
-
-          <div className="login-card-footer">
-            {error && (
-              <div className="login-failed">
-                <span style={{ fontSize: "12px" }}>{error}</span>
-              </div>
-            )}
-
-            <button
-              className="login-button-submit"
-              onClick={() => handleLogin()}
-            >
-              Login
-            </button>
-          </div>
         </div>
       </div>
     </div>

@@ -137,10 +137,15 @@ nav {
 .img-pp {
   object-fit: 1 / 1;
   border-radius: 999px;
-  width: 3rem;
   cursor: pointer;
 }
 
+.img-pp-isLogin {
+  width: 50px;
+  object-fit: 1 / 1;
+  border-radius: 999px;
+  cursor: pointer;
+}
 .container-profile {
   display: none;
   color: white;
@@ -292,6 +297,11 @@ nav {
   flex-direction: column;
   row-gap: 0.4rem;
 }
+.login-button {
+  font-weight: 500;
+  color: white;
+}
+
 @media (max-width: 640px) {
   nav {
     z-index: 100;

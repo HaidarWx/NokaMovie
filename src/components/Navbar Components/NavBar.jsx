@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { ProfileDropdown } from "../Navbar Components/ProfileDropdown";
+
 export function NavBar({
   isModalProfileOpen,
   setIsModalProfileOpen,
@@ -13,12 +14,18 @@ export function NavBar({
 
   const navigate = useNavigate();
 
+  const profilePicture = account
+    ? `https://media.themoviedb.org/t/p/w50_and_h50_face/${account.avatar.tmdb.avatar_path}`
+    : "/public/image/madoka_pfp.jpg";
+  console.log(profilePicture);
+
   function handleSearch(event) {
     event.preventDefault();
     const inputUser = keyword.trim().toLowerCase().replace(/\s+/g, "-");
     if (!inputUser) return;
     navigate(`/search?query=${encodeURIComponent(inputUser)}`);
   }
+
   console.log(account);
   return (
     <>
@@ -69,14 +76,24 @@ export function NavBar({
                   <i className="bi bi-bookmark-fill"></i>
                 </Link>
               </div>
-              <div
-                className="navbar-pfp"
-                onClick={() => {
-                  setIsModalProfileOpen(true);
-                }}
-              >
-                <img src="/image/madoka_pfp.jpg" alt="" className="img-pp" />
-              </div>
+              {account ? (
+                <div
+                  className="navbar-pfp"
+                  onClick={() => {
+                    setIsModalProfileOpen(true);
+                  }}
+                >
+                  <img
+                    src={profilePicture ? profilePicture : ""}
+                    alt=""
+                    className="img-pp-isLogin"
+                  />
+                </div>
+              ) : (
+                <Link className="navbar-pfp" to={`/login/`}>
+                  <span className="login-button">Login</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -168,6 +185,7 @@ export function NavBar({
 
         <ProfileDropdown
           isModalProfileOpen={isModalProfileOpen}
+          account={account}
         ></ProfileDropdown>
       </nav>
 
