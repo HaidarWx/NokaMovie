@@ -1,6 +1,11 @@
 export const API_KEY = "1c353dc1b6d94ce88642f8d6b57fa0b7";
 export const BASE_URL = "https://api.themoviedb.org/3";
+import axios from "axios";
 
+const api = axios.create({
+  baseURL: "https://api.themoviedb.org/3",
+  params: { api_key: "1c353dc1b6d94ce88642f8d6b57fa0b7" },
+});
 /* Request data untuk hasil informasi akun tmdb */
 
 const headers = {
@@ -36,34 +41,19 @@ export function getAccount(sessionId) {
   return request(`/account?session_id=${sessionId}`);
 }
 /* Request data untuk hasil film dari search */
-export async function getMovies(inputKeyword) {
+export async function getMovies(keyword) {
   const [movieRes, tvRes] = await Promise.all([
-    fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${inputKeyword}`),
-    fetch(`${BASE_URL}/search/tv?api_key=${API_KEY}&query=${inputKeyword}`),
+    api.get(`/search/movie`, { params: { query: keyword } }),
+    api.get("/search/tv", { params: { query: keyword } }),
   ]);
-  if (!movieRes.ok || !tvRes.ok) {
-    throw new Error("Gagal mengambil data");
-  }
 
-  const movieData = await movieRes.json();
-  const tvData = await tvRes.json();
-
-  const results = [
-    ...movieData.results.map((item) => ({ ...item, media_type: "movie" })),
-    ...tvData.results.map((item) => ({ ...item, media_type: "tv" })),
+  return [
+    ...movieRes.data.results.map((item) => ({ ...item, media_type: "movie" })),
+    ...tvRes.data.results.map((item) => ({ ...item, media_type: "tv" })),
   ];
-
-  return results;
 }
 export async function getPopularMovies() {
-  const response = await fetch(
-    `${BASE_URL}/trending/all/week?api_key=${API_KEY}`, //Hero-Swiper
-  );
-
-  if (!response.ok) {
-    throw new Error("Gagal mengambil data movie popular!");
-  }
-  const data = await response.json();
+  const { data } = await api.get("/trending/all/week");
   return data.results;
 }
 export async function loadAllGenres() {
@@ -82,44 +72,23 @@ export async function loadAllGenres() {
   return [...movieData.genres, ...tvData.genres];
 }
 export async function getTrendingDays() {
-  const response = await fetch(
-    `${BASE_URL}/trending/all/day?api_key=${API_KEY}`,
-  );
-
-  if (!response.ok) {
-    throw new Error("Gagal mengambil data movie popular!");
-  }
-  const data = await response.json();
+  const { data } = await api.get("/trending/all/day");
   return data.results;
 }
 export async function getTrendingWeeks() {
-  const response = await fetch(
-    `${BASE_URL}/trending/all/week?api_key=${API_KEY}`,
-  );
-
-  if (!response.ok) {
-    throw new Error("Gagal mengambil data movie popular!");
-  }
-  const data = await response.json();
-
+  const { data } = await api.get("/trending/all/week");
   return data.results;
 }
 export async function getTrendingPopular() {
-  const response = await fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}`);
-
-  if (!response.ok) {
-    throw new Error("Gagal mengambil data movie popular!");
-  }
-  const data = await response.json();
+  const { data } = await api.get("/tv/popular");
   const movies = data.results.map((movie) => ({
     ...movie,
     media_type: "tv",
   }));
-  console.log(movies);
   return movies;
 }
 export async function getTrendingTopRated() {
-  const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`);
+  /* const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`);
 
   if (!response.ok) {
     throw new Error("Gagal mengambil data movie popular!");
@@ -127,17 +96,16 @@ export async function getTrendingTopRated() {
   const data = await response.json();
   const movies = addMediaType(data, "movie");
   console.log(movies);
+  return movies; */
+  const { data } = await api.get("/movie/popular");
+  const movies = addMediaType(data, "movie");
   return movies;
 }
 export async function getDetail(id, type) {
-  const detailRes = await fetch(
-    `${BASE_URL}/${type}/${id}?api_key=${API_KEY}&append_to_response=videos,content_ratings`,
+  const { data } = await api.get(
+    `/${type}/${id}?api_key=${API_KEY}&append_to_response=videos,content_ratings`,
   );
-  if (!detailRes.ok) {
-    throw new Error("Gagal mengambil data detail film!");
-  }
-  const detail = await detailRes.json();
-  return detail;
+  return data;
 }
 
 export async function getSeasons(id, type, seasonNumber) {
@@ -145,25 +113,15 @@ export async function getSeasons(id, type, seasonNumber) {
     return;
   }
 
-  const res = await fetch(
-    `${BASE_URL}/tv/${id}/season/${seasonNumber}?api_key=${API_KEY}`,
+  const { data } = await api.get(
+    `/tv/${id}/season/${seasonNumber}?api_key=${API_KEY}`,
   );
-  if (!res.ok) {
-    throw new Error("Gagal mengambil data seasons");
-  }
-  const data = await res.json();
-
   return data;
 }
 export async function getSeasonDetail(id, seasonNumber) {
-  const res = await fetch(
-    `${BASE_URL}/tv/${id}/season/${seasonNumber}?api_key=${API_KEY}`,
+  const { data } = await api.get(
+    `/tv/${id}/season/${seasonNumber}?api_key=${API_KEY}`,
   );
-  if (!res.ok) {
-    throw new Error("Gagal mengambil data detail season!");
-  }
-  const data = await res.json();
-
   return data;
 }
 

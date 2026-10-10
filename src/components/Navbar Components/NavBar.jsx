@@ -17,7 +17,6 @@ export function NavBar({
   const profilePicture = account
     ? `https://media.themoviedb.org/t/p/w50_and_h50_face/${account.avatar.tmdb.avatar_path}`
     : "/public/image/madoka_pfp.jpg";
-  console.log(profilePicture);
 
   function handleSearch(event) {
     event.preventDefault();

@@ -249,6 +249,7 @@ nav {
 }
 .login-card-login {
   display: flex;
+
   row-gap: 0.5rem;
   flex-direction: column;
 }
@@ -261,7 +262,7 @@ nav {
 .login-field-password input {
   font-family: "Poppins", sans-serif;
   border: none;
-  width: max-content;
+  width: 100%;
   padding: 0.45rem;
   border-radius: 5px;
   font-size: 20px;
@@ -294,6 +295,7 @@ nav {
 }
 .login-card-footer {
   display: flex;
+
   flex-direction: column;
   row-gap: 0.4rem;
 }

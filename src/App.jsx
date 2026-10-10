@@ -12,6 +12,7 @@ import { HomeContent } from "./pages/HomeContent.jsx";
 import "swiper/css";
 import { LoginForm } from "./components/Navbar Components/LoginForm.jsx";
 import { getAccount } from "./api/tmdb.jsx";
+import axios from "axios";
 function App() {
   const [wishlist, setWishlist] = useState(() => {
     const saveWishlist = localStorage.getItem("wishlist");

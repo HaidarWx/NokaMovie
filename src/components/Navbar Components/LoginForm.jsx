@@ -27,7 +27,7 @@ export function LoginForm({ sessionId, setSessionId }) {
       setLoading(false);
     }
   }
-
+  console.log(error);
   return (
     <div className="login-modal-overlay">
       {loading && (
@@ -89,7 +89,7 @@ export function LoginForm({ sessionId, setSessionId }) {
             <div className="login-card-footer">
               {error && (
                 <div className="login-failed">
-                  <span style={{ fontSize: "12px" }}>{error}</span>
+                  <span style={{ fontSize: "12px" }}>{error.message}</span>
                 </div>
               )}
 
