@@ -6,7 +6,6 @@ const api = axios.create({
   baseURL: "https://api.themoviedb.org/3",
   params: { api_key: "1c353dc1b6d94ce88642f8d6b57fa0b7" },
 });
-/* Request data untuk hasil informasi akun tmdb */
 
 const headers = {
   accept: "application/json",
@@ -23,22 +22,32 @@ async function request(path, options = {}) {
 }
 
 export async function login(username, password) {
-  const { request_token } = await request(`/authentication/token/new`);
+  //1. Meminta request token
+  const { data } = await api.get(`/authentication/token/new`);
+  const request_token = data.request_token;
 
-  await request("/authentication/token/validate_with_login", {
-    method: "POST",
-    body: JSON.stringify({ username, password, request_token }),
+  // 2. Cek username & password ? request_token = true
+  await api.post(`/authentication/token/validate_with_login`, {
+    username,
+    password,
+    request_token,
   });
 
-  const session_id = await request("/authentication/session/new", {
-    method: "POST",
-    body: JSON.stringify({ request_token }),
+  //3. Meminta session baru
+  const sessionRes = await api.post(`/authentication/session/new`, {
+    request_token,
   });
-  return session_id;
+  console.log(sessionRes);
+  return sessionRes.data.session_id;
 }
 
-export function getAccount(sessionId) {
-  return request(`/account?session_id=${sessionId}`);
+export async function getAccount(sessionId) {
+  const response = await api.get(`/account`, {
+    params: {
+      session_id: sessionId,
+    },
+  });
+  return response.data;
 }
 /* Request data untuk hasil film dari search */
 export async function getMovies(keyword) {
@@ -57,8 +66,6 @@ export async function getPopularMovies() {
   return data.results;
 }
 export async function loadAllGenres() {
-  // Library Genre
-
   const [movieRes, tvRes] = await Promise.all([
     fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`),
     fetch(`${BASE_URL}/genre/tv/list?api_key=${API_KEY}`),
@@ -88,15 +95,6 @@ export async function getTrendingPopular() {
   return movies;
 }
 export async function getTrendingTopRated() {
-  /* const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`);
-
-  if (!response.ok) {
-    throw new Error("Gagal mengambil data movie popular!");
-  }
-  const data = await response.json();
-  const movies = addMediaType(data, "movie");
-  console.log(movies);
-  return movies; */
   const { data } = await api.get("/movie/popular");
   const movies = addMediaType(data, "movie");
   return movies;

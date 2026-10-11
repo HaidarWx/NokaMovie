@@ -12,7 +12,7 @@ import { HomeContent } from "./pages/HomeContent.jsx";
 import "swiper/css";
 import { LoginForm } from "./components/Navbar Components/LoginForm.jsx";
 import { getAccount } from "./api/tmdb.jsx";
-import axios from "axios";
+
 function App() {
   const [wishlist, setWishlist] = useState(() => {
     const saveWishlist = localStorage.getItem("wishlist");
@@ -25,7 +25,7 @@ function App() {
     return saveSessionId ? JSON.parse(saveSessionId) : [];
   });
   const [account, setAccount] = useState(null);
-
+  console.log(account);
   const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
   console.log(isModalProfileOpen);
   const [isSearchMobileOpen, setIsSearchMobileOpen] = useState(false);
@@ -36,13 +36,13 @@ function App() {
     localStorage.setItem("session_id", JSON.stringify(sessionId));
   }, [sessionId]);
   useEffect(() => {
-    if (!sessionId?.session_id) {
+    if (!sessionId) {
       setAccount(null);
       return;
     }
     let ignore = false;
 
-    getAccount(sessionId.session_id)
+    getAccount(sessionId)
       .then((data) => {
         if (!ignore) setAccount(data);
       })
@@ -78,7 +78,7 @@ function App() {
       return [dataWishlist, ...prevWishlist];
     });
   }
-  console.log(account);
+
   return (
     <BrowserRouter>
       <div

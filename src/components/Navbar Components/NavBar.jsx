@@ -25,7 +25,6 @@ export function NavBar({
     navigate(`/search?query=${encodeURIComponent(inputUser)}`);
   }
 
-  console.log(account);
   return (
     <>
       <nav className={`navbar ${isSearchMobileOpen ? "active" : ""}`}>

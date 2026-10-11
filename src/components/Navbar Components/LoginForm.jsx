@@ -16,6 +16,7 @@ export function LoginForm({ sessionId, setSessionId }) {
     e.preventDefault();
     setLoading(true);
     setError("");
+
     try {
       const session = await getSessionId(username, password);
       setSessionId(session);
@@ -27,7 +28,7 @@ export function LoginForm({ sessionId, setSessionId }) {
       setLoading(false);
     }
   }
-  console.log(error);
+
   return (
     <div className="login-modal-overlay">
       {loading && (
