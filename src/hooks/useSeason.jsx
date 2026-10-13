@@ -9,13 +9,16 @@ export function useSeason(data, id, type) {
     if (type === "movie") return;
     let ignore = false;
     const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
+
     async function loadSeason() {
       try {
         setLoading(true);
         setError(null);
+
         const episodeDetails = await Promise.all(
           seasonNumber.map((n) => getSeasons(id, type, n)),
         );
+        console.log(seasonNumber);
         if (!ignore) setEpisode(episodeDetails);
       } catch (err) {
         if (!ignore) setError(err);
