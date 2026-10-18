@@ -5,6 +5,7 @@ import { useMovieDetail } from "../hooks/useMovieDetail.jsx";
 import { useSeason } from "../hooks/useSeason.jsx";
 import { getDetail } from "../api/tmdb.jsx";
 import { BeatLoader } from "react-spinners";
+import { useQuery } from "@tanstack/react-query";
 export function MovieDetail({ wishlist, onToggleWishlist }) {
   const { type, id } = useParams();
   const { data, loading, error } = useMovieDetail(
@@ -12,7 +13,11 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
     type,
     id,
   );
+  /* const {data:episode, error:errorSeason, loading:loadingSeason} = useQuery({
+    queryKey:[data, id, type], queryFn:() => useSeason(data,id,type) 
+  }) */
   const { episode, errorSeason, loadingSeason } = useSeason(data, id, type); //if this film is tv, will make list of seasons
+  console.log(episode);
   const [showTrailer, setShowTrailer] = useState(false);
 
   if (loading)

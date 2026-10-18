@@ -116,6 +116,15 @@ export async function getSeasons(id, type, seasonNumber) {
   );
   return data;
 }
+export async function getAllSeason(data, id, type) {
+  if (type !== "tv") {
+    return;
+  }
+  console.log(data);
+  const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
+  console.log(seasonNumber);
+  return await Promise.all(seasonNumber.map((n) => getSeasons(id, type, n)));
+}
 export async function getSeasonDetail(id, seasonNumber) {
   const { data } = await api.get(
     `/tv/${id}/season/${seasonNumber}?api_key=${API_KEY}`,

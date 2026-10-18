@@ -1,36 +1,30 @@
+import { useQueries } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
-
 import { getSeasons } from "../api/tmdb.jsx";
 export function useSeason(data, id, type) {
-  const [episode, setEpisode] = useState([]);
-  const [errorSeason, setError] = useState(null);
-  const [loadingSeason, setLoading] = useState(true);
-  useEffect(() => {
-    if (type === "movie") return;
-    let ignore = false;
-    const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
+  const isTv = type === "tv";
+  const hasSeasonData = data && data.seasons;
+  const shouldFetch = isTv && hasSeasonData;
+  console.log(shouldFetch);
+  const seasonNumbers = shouldFetch
+    ? data.seasons.map((e) => ({ number: e.seasonNumber, idSeason: e.id }))
+    : [];
 
-    async function loadSeason() {
-      try {
-        setLoading(true);
-        setError(null);
+  const results = useQueries({
+    queries: seasonNumbers.map((season) => ({
+      queryKey: ["season", id, season.number, season.idSeason],
+      queryFn: () => {
+        return getSeasons(id, type, season.number);
+      },
+      enabled: Boolean(shouldFetch),
+    })),
+  });
+  console.log(results);
+  const episode = results.map((res) => res.data).filter(Boolean);
+  const loadingSeason = shouldFetch
+    ? results.some((res) => res.isLoading || res.isPending)
+    : false;
+  const errorSeason = results.find((res) => res.isError)?.error || null;
 
-        const episodeDetails = await Promise.all(
-          seasonNumber.map((n) => getSeasons(id, type, n)),
-        );
-        console.log(seasonNumber);
-        if (!ignore) setEpisode(episodeDetails);
-      } catch (err) {
-        if (!ignore) setError(err);
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    }
-    loadSeason();
-
-    return () => {
-      ignore = true;
-    };
-  }, [data, id, type]);
   return { episode, errorSeason, loadingSeason };
 }
