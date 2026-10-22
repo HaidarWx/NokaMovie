@@ -1,5 +1,4 @@
 import { useQueries } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
 import { getSeasons } from "../api/tmdb.jsx";
 export function useSeason(data, id, type) {
   const isTv = type === "tv";
