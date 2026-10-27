@@ -12,6 +12,7 @@ import { HomeContent } from "./pages/HomeContent.jsx";
 import "swiper/css";
 import { LoginForm } from "./components/Navbar Components/LoginForm.jsx";
 import { getAccount } from "./api/tmdb.jsx";
+import { ProfilePage } from "./pages/ProfilePage.jsx";
 
 function App() {
   const [wishlist, setWishlist] = useState(() => {
@@ -140,10 +141,14 @@ function App() {
             path={"/wishlist/"}
           ></Route>
           <Route
-            path="/login"
+            path="/login/:username"
             element={
               <LoginForm sessionId={sessionId} setSessionId={setSessionId} />
             }
+          ></Route>
+          <Route
+            path="/u/:username"
+            element={<ProfilePage account={account}></ProfilePage>}
           ></Route>
         </Routes>
         <Footer />

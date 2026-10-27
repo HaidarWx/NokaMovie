@@ -31,7 +31,7 @@ export function ProfileDropdown({ isModalProfileOpen, account }) {
         </div>
         <hr />
         <div className="account-menu">
-          <Link className="menu-profile-button">
+          <Link className="menu-profile-button" to={`/u/${username}`}>
             <section className="item-button-profile">
               <i className="bi bi-person-fill"></i>
               Account

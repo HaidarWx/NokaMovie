@@ -5,7 +5,7 @@ import { useMovieDetail } from "../hooks/useMovieDetail.jsx";
 import { useSeason } from "../hooks/useSeason.jsx";
 import { getDetail } from "../api/tmdb.jsx";
 import { BeatLoader } from "react-spinners";
-import { useQuery } from "@tanstack/react-query";
+
 export function MovieDetail({ wishlist, onToggleWishlist }) {
   const { type, id } = useParams();
   const { data, loading, error } = useMovieDetail(

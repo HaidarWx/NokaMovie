@@ -1,0 +1,11 @@
+.profile-container {
+  color: white;
+}
+.profile-wrapper {
+  display: flex;
+}
+.content-wrapper {
+  display: flex;
+  gap: 1rem;
+  font-family: "Poppins", sans-serif;
+}
