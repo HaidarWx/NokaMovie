@@ -4,7 +4,7 @@ export function ProfileDropdown({ isModalProfileOpen, account }) {
   const username = account ? account.username : "";
   const profilePicture = account
     ? `https://media.themoviedb.org/t/p/w50_and_h50_face/${account.avatar.tmdb.avatar_path}`
-    : "";
+    : "nohave";
   const id = account ? account.id : "";
 
   function handleLogOut(e) {

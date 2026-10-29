@@ -108,6 +108,7 @@ export async function getDetail(id, type) {
 }
 
 export async function getSeasons(id, type, seasonNumber) {
+  console.log(seasonNumber);
   if (type !== "tv") {
     return;
   }

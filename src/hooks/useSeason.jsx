@@ -4,9 +4,9 @@ export function useSeason(data, id, type) {
   const isTv = type === "tv";
   const hasSeasonData = data && data.seasons;
   const shouldFetch = isTv && hasSeasonData;
-  console.log(shouldFetch);
+
   const seasonNumbers = shouldFetch
-    ? data.seasons.map((e) => ({ number: e.seasonNumber, idSeason: e.id }))
+    ? data.seasons.map((e) => ({ number: e.season_number, idSeason: e.id }))
     : [];
 
   const results = useQueries({
@@ -18,7 +18,7 @@ export function useSeason(data, id, type) {
       enabled: Boolean(shouldFetch),
     })),
   });
-  console.log(results);
+
   const episode = results.map((res) => res.data).filter(Boolean);
   const loadingSeason = shouldFetch
     ? results.some((res) => res.isLoading || res.isPending)
