@@ -37,17 +37,17 @@ function App() {
     localStorage.setItem("session_id", JSON.stringify(sessionId));
   }, [sessionId]);
   useEffect(() => {
-    if (!sessionId) {
-      setAccount(null);
+    if (sessionId.length === 0) {
       return;
     }
     let ignore = false;
-
+    console.log(sessionId);
     getAccount(sessionId)
       .then((data) => {
         if (!ignore) setAccount(data);
       })
       .catch((err) => {
+        console.log("error");
         console.error(err);
       });
 
@@ -55,6 +55,7 @@ function App() {
       ignore = true;
     };
   }, [sessionId]);
+
   function toggleWishlist(movie) {
     const { id, type, title, poster, date, original } = movie;
 
@@ -141,10 +142,8 @@ function App() {
             path={"/wishlist/"}
           ></Route>
           <Route
-            path="/login/:username"
-            element={
-              <LoginForm sessionId={sessionId} setSessionId={setSessionId} />
-            }
+            path="/login/"
+            element={<LoginForm setSessionId={setSessionId} />}
           ></Route>
           <Route
             path="/u/:username"

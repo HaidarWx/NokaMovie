@@ -4,7 +4,7 @@ import { getSessionId } from "../../hooks/useSessionId.jsx";
 
 import { SyncLoader } from "react-spinners";
 
-export function LoginForm({ sessionId, setSessionId }) {
+export function LoginForm({ setSessionId }) {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [username, setUsername] = useState("");
@@ -23,7 +23,7 @@ export function LoginForm({ sessionId, setSessionId }) {
       console.log(session);
       navigate("/", { replace: true });
     } catch (error) {
-      setError(error.message);
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -90,7 +90,7 @@ export function LoginForm({ sessionId, setSessionId }) {
             <div className="login-card-footer">
               {error && (
                 <div className="login-failed">
-                  <span style={{ fontSize: "12px" }}>{error.message}</span>
+                  <span style={{ fontSize: "12px" }}>{error}</span>
                 </div>
               )}
 

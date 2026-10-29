@@ -7,7 +7,7 @@ const api = axios.create({
   params: { api_key: "1c353dc1b6d94ce88642f8d6b57fa0b7" },
 });
 
-const headers = {
+/* const headers = {
   accept: "application/json",
   "content-type": "application/json",
   Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYzM1M2RjMWI2ZDk0Y2U4ODY0MmY4ZDZiNTdmYTBiNyIsIm5iZiI6MTc3MjAzNTI1OC45NzgsInN1YiI6IjY5OWYxY2JhNDdiY2QzY2Y2M2U4NWY3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.qOfQ5MU0G09aObPB_H42tcE8_Gg-uDcw3D2Vyw7X_l0`,
@@ -19,7 +19,7 @@ async function request(path, options = {}) {
   console.log(data);
   if (!res.ok) throw new Error(data.status_message || "Request gagal");
   return data;
-}
+} */
 
 export async function login(username, password) {
   //1. Meminta request token
@@ -47,6 +47,7 @@ export async function getAccount(sessionId) {
       session_id: sessionId,
     },
   });
+
   return response.data;
 }
 /* Request data untuk hasil film dari search */
