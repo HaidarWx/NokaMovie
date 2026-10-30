@@ -108,7 +108,6 @@ export async function getDetail(id, type) {
 }
 
 export async function getSeasons(id, type, seasonNumber) {
-  console.log(seasonNumber);
   if (type !== "tv") {
     return;
   }
@@ -124,7 +123,7 @@ export async function getAllSeason(data, id, type) {
   }
   console.log(data);
   const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
-  console.log(seasonNumber);
+
   return await Promise.all(seasonNumber.map((n) => getSeasons(id, type, n)));
 }
 export async function getSeasonDetail(id, seasonNumber) {

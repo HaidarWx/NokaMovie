@@ -26,9 +26,9 @@ function App() {
     return saveSessionId ? JSON.parse(saveSessionId) : [];
   });
   const [account, setAccount] = useState(null);
-  console.log(account);
+
   const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
-  console.log(isModalProfileOpen);
+
   const [isSearchMobileOpen, setIsSearchMobileOpen] = useState(false);
   useEffect(() => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
@@ -41,13 +41,12 @@ function App() {
       return;
     }
     let ignore = false;
-    console.log(sessionId);
+
     getAccount(sessionId)
       .then((data) => {
         if (!ignore) setAccount(data);
       })
       .catch((err) => {
-        console.log("error");
         console.error(err);
       });
 

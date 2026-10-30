@@ -11,7 +11,7 @@ export function useSeasonDetail(fetchFunction, id, seasonNumber) {
       try {
         setError(null);
         setLoading(true);
-        console.log(id, seasonNumber);
+
         const seasonDetail = await fetchFunction(id, seasonNumber);
         if (!ignore) setEpisode(seasonDetail);
       } catch (err) {
