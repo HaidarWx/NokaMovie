@@ -184,6 +184,7 @@ export function NavBar({
         <ProfileDropdown
           isModalProfileOpen={isModalProfileOpen}
           account={account}
+          setIsModalProfileOpen={setIsModalProfileOpen}
         ></ProfileDropdown>
       </nav>
 

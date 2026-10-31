@@ -79,7 +79,7 @@ function App() {
       return [dataWishlist, ...prevWishlist];
     });
   }
-
+  console.log(account);
   return (
     <BrowserRouter>
       <div

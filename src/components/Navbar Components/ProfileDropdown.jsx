@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 
-export function ProfileDropdown({ isModalProfileOpen, account }) {
+export function ProfileDropdown({
+  isModalProfileOpen,
+  account,
+  setIsModalProfileOpen,
+}) {
   const username = account ? account.username : "";
   const profilePicture = account
     ? `https://media.themoviedb.org/t/p/w50_and_h50_face/${account.avatar.tmdb.avatar_path}`
@@ -31,18 +35,17 @@ export function ProfileDropdown({ isModalProfileOpen, account }) {
         </div>
         <hr />
         <div className="account-menu">
-          <Link className="menu-profile-button" to={`/u/${username}`}>
+          <Link
+            className="menu-profile-button"
+            to={`/u/${username}`}
+            onClick={() => setIsModalProfileOpen(false)}
+          >
             <section className="item-button-profile">
               <i className="bi bi-person-fill"></i>
               Account
             </section>
           </Link>
-          <Link className="menu-profile-button">
-            <section className="item-button-profile">
-              <i className="bi bi-person-fill-gear"></i>
-              Change Account
-            </section>
-          </Link>
+
           <Link className="menu-profile-button" onClick={handleLogOut}>
             <section className="item-button-profile">
               <i className="bi bi-box-arrow-right"></i>
