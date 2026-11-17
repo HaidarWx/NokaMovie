@@ -21,7 +21,7 @@ export function SeasonList({ seasons, id }) {
               month: "long",
               year: "numeric",
             }).format(dateObj);
-            console.log(date);
+
             return date;
           }
           return (

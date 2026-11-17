@@ -17,7 +17,7 @@ export function MovieDetail({ wishlist, onToggleWishlist }) {
     queryKey:[data, id, type], queryFn:() => useSeason(data,id,type) 
   }) */
   const { episode, errorSeason, loadingSeason } = useSeason(data, id, type); //if this film is tv, will make list of seasons
-  console.log(episode);
+
   const [showTrailer, setShowTrailer] = useState(false);
 
   if (loading)

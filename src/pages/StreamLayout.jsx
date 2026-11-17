@@ -8,7 +8,7 @@ export function StreamLayout({ dataEpisode, dataSeason, dataMovie }) {
   const age =
     dataMovie.content_ratings.results.find((r) => r.iso_3166_1 === "US")
       ?.rating || "N/A";
-  console.log(dataMovie.content_ratings.results);
+
   const poster_season = dataSeason.poster_path;
   const poster = `https://media.themoviedb.org/t/p/w300_and_h450_face/${poster_season}`;
   const genres = dataMovie.genres

@@ -17,7 +17,7 @@ export function StreamDetail() {
     "tv",
     id,
   );
-  console.log(data);
+
   if (!data || !seasons?.episodes) return <p>Loading UwU</p>;
   if (loading)
     return (

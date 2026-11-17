@@ -37,7 +37,7 @@ export async function login(username, password) {
   const sessionRes = await api.post(`/authentication/session/new`, {
     request_token,
   });
-  console.log(sessionRes);
+
   return sessionRes.data.session_id;
 }
 
@@ -121,7 +121,7 @@ export async function getAllSeason(data, id, type) {
   if (type !== "tv") {
     return;
   }
-  console.log(data);
+
   const seasonNumber = data ? data.seasons.map((e) => e.season_number) : [];
 
   return await Promise.all(seasonNumber.map((n) => getSeasons(id, type, n)));

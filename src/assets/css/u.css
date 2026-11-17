@@ -61,12 +61,13 @@
 }
 
 .username {
-  font-size: 2rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 46px;
   font-weight: 700;
 }
 
 .description {
-  font-size: 1rem;
+  font-size: 26px;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.85);
 }

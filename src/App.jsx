@@ -71,7 +71,7 @@ function App() {
       const isAlreadyWishlist = prevWishlist.some(
         (item) => item.id === id && item.type === type,
       );
-      console.log(isAlreadyWishlist);
+
       if (isAlreadyWishlist) {
         return prevWishlist.filter((item) => item.id !== id);
       }
@@ -79,7 +79,7 @@ function App() {
       return [dataWishlist, ...prevWishlist];
     });
   }
-  console.log(account);
+
   return (
     <BrowserRouter>
       <div
